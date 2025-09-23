@@ -40,3 +40,24 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.child-window-content {
+  padding: 0;
+  margin: 0;
+}
+
+.child-window-content .page-container {
+  padding: 20px;
+}
+
+.main-window-content {
+  padding: 20px;
+}
+
+/* Remove default margins in child windows */
+.child-window-content h1,
+.child-window-content h2,
+.child-window-content h3 {
+  margin-top: 0;
+}

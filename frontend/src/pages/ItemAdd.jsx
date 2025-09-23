@@ -170,13 +170,6 @@ const ItemAdd = () => {
       [name]: value,
     }));
   };
-
-  const bufferConvertString = (company) => {
-    const convertedCompanyID = company?._id
-      ? Buffer.from(company._id.buffer).toString("hex")
-      : null;
-    return convertedCompanyID;
-  };
   const handleSubmit = async () => {
     // Validate required fields
     if (!formData.itemCode || !formData.itemName) {
@@ -210,7 +203,7 @@ const ItemAdd = () => {
     }
 
     window.close();
-    
+
   };
 
   useEffect(() => {
@@ -285,8 +278,8 @@ const ItemAdd = () => {
                 )
                 .map((category) => (
                   <option
-                    key={bufferConvertString(category)}
-                    value={bufferConvertString(category)}
+                    key={category?._id}
+                    value={category?._id}
                   >
                     {category?.categoryName || "Unknown"}
                   </option>
