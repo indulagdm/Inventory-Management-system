@@ -275,16 +275,16 @@ const ItemAdd = () => {
               <option value="">Select a category</option>
               {categories
                 .sort((a, b) =>
-                  (a?._doc?.categoryName || "").localeCompare(
-                    b?._doc?.categoryName || ""
+                  (a?.categoryName || "").localeCompare(
+                    b?.categoryName || ""
                   )
                 )
                 .map((category) => (
                   <option
-                    key={bufferConvertString(category?._doc)}
-                    value={bufferConvertString(category?._doc)}
+                    key={bufferConvertString(category)}
+                    value={bufferConvertString(category)}
                   >
-                    {category?._doc?.categoryName || "Unknown"}
+                    {category?.categoryName || "Unknown"}
                   </option>
                 ))}
             </select>

@@ -1,6 +1,7 @@
 import Dashboard from "./pages/Dashboard";
 import CategoryAdd from "./pages/CategoryAdd";
 import ItemAdd from "./pages/ItemAdd";
+import ItemUpdateDelete from "./pages/ItemUpdateDelete";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Dashboard/>}/>
           <Route path="/add-item" element={<ItemAdd/>}/>
           <Route path="/add-category" element={<CategoryAdd/>}/>
+          <Route path="/update-item/:itemID" element={<ItemUpdateDelete/>}/>
         </Routes>
       </Router>
     </div>

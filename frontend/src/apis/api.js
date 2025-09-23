@@ -34,3 +34,30 @@ export const getCategories = async () => {
     throw new Error(error.message);
   }
 };
+
+export const getItemByID = async (itemID) => {
+  try {
+    const response = await window.electronAPI.getItemByID(itemID);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateItem = async (itemID, data) => {
+  try {
+    const response = await window.electronAPI.updateItem(itemID, data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const deleteItem = async (itemID) => {
+  try {
+    const response = await window.electronAPI.deleteItem(itemID);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
