@@ -319,7 +319,7 @@
 
 //       <button
 //         type="button"
-//         onClick={handleDelete} 
+//         onClick={handleDelete}
 //         className={`w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${
 //           isLoading ? "opacity-50 cursor-not-allowed" : ""
 //         }`}
@@ -341,8 +341,9 @@ import {
   getCategories,
   getItemByID,
 } from "../apis/api.js";
+import { useParams, useNavigate } from "react-router-dom";
 
-const ItemUpdateDelete = ({ itemID }) => {
+const ItemUpdateDelete = () => {
   const [formData, setFormData] = useState({
     itemCode: "",
     itemName: "",
@@ -356,6 +357,11 @@ const ItemUpdateDelete = ({ itemID }) => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const {itemID} = useParams();
+
+  console.log("Received itemID:", itemID, typeof itemID);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -368,7 +374,9 @@ const ItemUpdateDelete = ({ itemID }) => {
     if (!itemID) return;
     e.preventDefault();
 
-    const confirmUpdate = window.confirm("Are you sure you want to update item details?");
+    const confirmUpdate = window.confirm(
+      "Are you sure you want to update item details?"
+    );
     if (!confirmUpdate) return;
 
     if (!formData.itemCode || !formData.itemName) {
@@ -398,7 +406,9 @@ const ItemUpdateDelete = ({ itemID }) => {
       const updatedData = {
         ...formData,
         unitPrice: formData.unitPrice ? parseFloat(formData.unitPrice) : 0,
-        sellingPrice: formData.sellingPrice ? parseFloat(formData.sellingPrice) : 0,
+        sellingPrice: formData.sellingPrice
+          ? parseFloat(formData.sellingPrice)
+          : 0,
         discount: formData.discount ? parseFloat(formData.discount) : 0,
         stock: formData.stock ? parseInt(formData.stock) : 0,
         categoryID: formData.categoryID || undefined,
@@ -408,7 +418,8 @@ const ItemUpdateDelete = ({ itemID }) => {
 
       if (response?.success) {
         toast.success("Item updated successfully");
-        window.location.reload();
+        navigate("/");
+        window.close()
       } else {
         toast.error(response?.error?.message || "Failed to update item");
       }
@@ -417,19 +428,23 @@ const ItemUpdateDelete = ({ itemID }) => {
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    const confirmDelete = window.confirm("Are you sure you want to delete item details?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete item details?"
+    );
     if (!confirmDelete) return;
     setIsLoading(true);
     try {
       const response = await deleteItem(itemID);
       if (response?.success) {
         toast.success("Item deleted successfully");
-        window.location.reload();
+        navigate("/")
+        window.close()
       } else {
         toast.error(response?.error?.message || "Failed to delete item");
       }
@@ -438,6 +453,7 @@ const ItemUpdateDelete = ({ itemID }) => {
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   useEffect(() => {
@@ -492,7 +508,9 @@ const ItemUpdateDelete = ({ itemID }) => {
 
   return (
     <div className="max-w-lg mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-      <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-gray-800">Item Details</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-gray-800">
+        Item Details
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -659,4 +677,3 @@ const ItemUpdateDelete = ({ itemID }) => {
 };
 
 export default ItemUpdateDelete;
-

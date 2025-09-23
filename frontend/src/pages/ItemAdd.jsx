@@ -145,6 +145,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { createItem, getCategories } from "../apis/api.js";
 import { Buffer } from "buffer";
+import { useNavigate } from "react-router-dom";
 
 const ItemAdd = () => {
   const [formData, setFormData] = useState({
@@ -155,10 +156,12 @@ const ItemAdd = () => {
     unitPrice: "",
     sellingPrice: "",
     discount: "",
-    stock:""
+    stock: "",
   });
+
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -191,12 +194,12 @@ const ItemAdd = () => {
           ? parseFloat(formData.sellingPrice)
           : 0,
         discount: formData.discount ? parseFloat(formData.discount) : 0,
-        stock:formData.stock ? parseFloat(formData.stock) : 0
+        stock: formData.stock ? parseFloat(formData.stock) : 0,
       });
 
       if (response?.success) {
         toast.success("Item added successfully");
-        window.location.reload()
+        navigate("/")
       } else {
         toast.error(response?.error?.message || "Failed to add item");
       }
@@ -205,6 +208,9 @@ const ItemAdd = () => {
     } finally {
       setIsLoading(false);
     }
+
+    window.close();
+    
   };
 
   useEffect(() => {
@@ -275,9 +281,7 @@ const ItemAdd = () => {
               <option value="">Select a category</option>
               {categories
                 .sort((a, b) =>
-                  (a?.categoryName || "").localeCompare(
-                    b?.categoryName || ""
-                  )
+                  (a?.categoryName || "").localeCompare(b?.categoryName || "")
                 )
                 .map((category) => (
                   <option
