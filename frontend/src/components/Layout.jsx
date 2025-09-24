@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
   const showNavbar = location.pathname === "/";
 
   return (
-    <div className="app-container">
+    <div className="flex-1 p-6">
       {showNavbar && <Navbar />}
       <main>{children}</main>
     </div>

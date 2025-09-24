@@ -7,11 +7,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import Category from "./pages/Category";
+import Item from "./pages/Item";
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App flex">
         <div className="page-wrapper">
           <div className="content">
             <ToastContainer
@@ -38,6 +40,9 @@ function App() {
               path="/item-update-delete/:itemID"
               element={<ItemUpdateDelete />}
             />
+
+            <Route path="/item" element={<Item/>}/>
+            <Route path="/category" element={<Category/>}/>
           </Routes>
         </Layout>
       </div>
