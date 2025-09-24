@@ -100,8 +100,8 @@ const Dashboard = () => {
                     {item?._doc?.itemName || item?.itemName}
                   </td>
                   <td className="p-3 text-sm text-gray-600">
-                    {item?._doc?.categoryID._id.categoryName ||
-                      item?.categoryID?._id?.categoryName}
+                    {item?._doc?.categoryID.categoryName ||
+                      item?.categoryID?.categoryName}
                   </td>
                   <td className="p-3 text-sm text-gray-600">
                     {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
