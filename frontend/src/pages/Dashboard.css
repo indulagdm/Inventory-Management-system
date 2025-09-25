@@ -1,0 +1,79 @@
+.container {
+  margin-left: 15vw;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
+}
+
+table td,
+table th {
+  border: 1px solid #565454;
+  font-size: 13px;
+  text-align: center;
+  width: 20px;
+  padding: 5px;
+}
+
+table th {
+  background-color: #ffffff;
+  font-weight: bold;
+}
+
+.table-container {
+  border: 1px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.table-header-row {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  background-color: #bdbcbc;
+}
+
+.table-body-td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.table-body-tr :hover {
+  background-color: #bdbcbc;
+  cursor: pointer;
+}
+
+header {
+  min-height: 2rem;
+  margin-left: 20%;
+}
+
+.add-button-section {
+  margin-left: 20%;
+}
+
+section {
+  .add-button {
+    padding: 3%;
+    width: 10rem;
+    background-color: rgb(40, 138, 40);
+    border: 0.5px solid black;
+    font-family: "Courier New", Courier, monospace;
+    border-radius: 5px;
+  }
+
+  .add-button :hover {
+    background-color: rgb(29, 101, 29);
+    cursor: pointer;
+    border: 0.5px solid black ;
+  }
+}
+
+.footer-part{
+    margin-top: 26vw;
+    font-size: 10px;
+    overflow-x: auto;
+}
