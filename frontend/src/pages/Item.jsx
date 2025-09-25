@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "./Dashboard.css";
 
 const Item = () => {
-  // const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -19,7 +19,7 @@ const Item = () => {
         const response = await getItems();
         if (response) {
           console.log(response);
-          // setItems(response.data);
+          setItems(response.data);
         }
       } catch (error) {
         toast.error(error.message);
@@ -29,19 +29,19 @@ const Item = () => {
     fetchData();
   }, []);
 
-  const items = [
-    {
-      _id:"1",
-      itemCode:"1255",
-      itemName:"Solar panel",
-    },
-    {
-      _id:"2",
-      itemCode:"1256",
-      itemName:"Solar Light"
-    }
+  // const items = [
+  //   {
+  //     _id:"1",
+  //     itemCode:"1255",
+  //     itemName:"Solar panel",
+  //   },
+  //   {
+  //     _id:"2",
+  //     itemCode:"1256",
+  //     itemName:"Solar Light"
+  //   }
 
-  ]
+  // ]
 
   const openAddItem = () => {
     window.electronAPI.send("open-add-item");
@@ -105,7 +105,7 @@ const Item = () => {
             </tbody>
           </table>
         ) : (
-          <p>No Items</p>
+          <p style={{marginLeft:"5rem"}}>No Items</p>
         )}
       </div>
     </div>

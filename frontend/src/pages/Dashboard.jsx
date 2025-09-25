@@ -9,7 +9,7 @@ import { Buffer } from "buffer";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  // const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -24,7 +24,7 @@ const Dashboard = () => {
         const response = await getItems();
         if (response) {
           console.log(response);
-          // setItems(response.data);
+          setItems(response.data);
         }
       } catch (error) {
         toast.error(error.message);
@@ -46,18 +46,18 @@ const Dashboard = () => {
     window.electronAPI.send("open-update-stock", itemID);
   };
 
-  const items = [
-    {
-      _id: "1",
-      itemCode: "1255",
-      itemName: "Solar panel",
-    },
-    {
-      _id: "2",
-      itemCode: "1256",
-      itemName: "Solar Light",
-    },
-  ];
+  // const items = [
+  //   {
+  //     _id: "1",
+  //     itemCode: "1255",
+  //     itemName: "Solar panel",
+  //   },
+  //   {
+  //     _id: "2",
+  //     itemCode: "1256",
+  //     itemName: "Solar Light",
+  //   },
+  // ];
 
   return (
     <div>

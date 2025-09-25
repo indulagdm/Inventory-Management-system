@@ -148,7 +148,7 @@ header {
 .add-button-section {
   .add-button {
     margin-left: 5rem;
-    background-color: rgb(83, 229, 70);
+    background-color: #1e1e2f;
     padding: 10px;
     border-radius: 2px;
     cursor: pointer;
@@ -156,10 +156,12 @@ header {
     border: none;
     min-width: 10rem;
     font-family: 'Courier New', Courier, monospace;
+    color: white;
   }
 
   .add-button:hover {
-    background-color: rgb(52, 213, 37);
+    background-color: #33334d;
+    color: #00d4ff;
     border-radius: 2px;
     cursor: pointer;
   }

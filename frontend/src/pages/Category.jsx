@@ -4,14 +4,14 @@ import { getCategories } from "../apis/api.js";
 import { toast } from "react-toastify";
 
 const Category = () => {
-  // const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
 
-  const formatNumber = (value) => {
-    return Number(value || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
+  // const formatNumber = (value) => {
+  //   return Number(value || 0).toLocaleString("en-US", {
+  //     minimumFractionDigits: 2,
+  //     maximumFractionDigits: 2,
+  //   });
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +19,7 @@ const Category = () => {
         const response = await getCategories();
         if (response) {
           console.log(response);
-          // setItems(response.data);
+          setItems(response.data);
         }
       } catch (error) {
         toast.error(error.message);
@@ -33,17 +33,17 @@ const Category = () => {
     window.electronAPI.send("open-add-category");
   };
 
-  const items = [
-    {
-      _id:"1",
-      categoryName:"Solar panel",
-    },
-    {
-      _id:"2",
-      categoryName:"Solar Light"
-    }
+  // const items = [
+  //   {
+  //     _id:"1",
+  //     categoryName:"Solar panel",
+  //   },
+  //   {
+  //     _id:"2",
+  //     categoryName:"Solar Light"
+  //   }
 
-  ]
+  // ]
 
   return (
     <div>
@@ -81,7 +81,7 @@ const Category = () => {
             </tbody>
           </table>
         ) : (
-          <p>No Categories</p>
+          <p style={{marginLeft:"5rem"}}>No Categories</p>
         )}
       </div>
     </div>

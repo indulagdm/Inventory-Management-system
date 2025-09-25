@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { updateStock } from "../apis/api.js";
+import './PopUpStyles.css'
 
 const UpdateStock = () => {
   const [formData, setFormData] = useState({
@@ -59,25 +60,61 @@ const UpdateStock = () => {
     }
   };
   return (
+    // <div>
+    //   <form onSubmit={handleSubmit}>
+    //     <div>
+    //       <label className="block text-sm font-medium text-gray-700 mb-1">
+    //         Stock
+    //       </label>
+    //       <input
+    //         type="number"
+    //         name="stock"
+    //         value={formData.stock}
+    //         onChange={handleChange}
+    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
+    //         placeholder="Enter stock"
+    //         step="1"
+    //         disabled={isLoading}
+    //       />
+    //     </div>
+
+    //     <button type="submit">Update</button>
+    //   </form>
+    // </div>
+
     <div>
+      <header>
+        <h2 className="header-h2">Update stock</h2>
+      </header>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Stock
-          </label>
+        <div className="input-container">
+          {/* <label className="">
+            Category Name
+          </label> */}
           <input
             type="number"
             name="stock"
             value={formData.stock}
             onChange={handleChange}
-            className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-            placeholder="Enter stock"
+            className="item-input"
+            placeholder=" "
             step="1"
             disabled={isLoading}
           />
+          <span className="placeholder">Stock</span>
         </div>
 
-        <button type="submit">Update</button>
+        <section>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="add-button-item"
+            disabled={isLoading}
+          >
+            {isLoading ? "Submitting..." : "Submit"}
+          </button>
+        </section>
       </form>
     </div>
   );
