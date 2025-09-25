@@ -1,0 +1,80 @@
+.input-container {
+  position: relative;
+  margin: 20px;
+  width: 300px;
+}
+
+.item-input {
+  width: 20rem;
+  padding: 10px;
+  font-size: 15px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.item-input:focus {
+  border-color: #007bff;
+}
+
+.placeholder {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.item-input:focus + .placeholder,
+.item-input:not(:placeholder-shown) + .placeholder {
+  top: 0;
+  font-size: 12px;
+  color: #007bff;
+  background: #fff;
+  padding: 0 5px;
+  transform: translateY(-50%);
+}
+
+.add-button-item {
+  background-color: rgb(83, 229, 70);
+  padding: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border: none;
+  padding: 10px;
+  width: 20rem;
+  font-size: 15px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.add-button-item:hover {
+  background-color: rgb(52, 213, 37);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.input-container {
+  option {
+    font-family: "Courier New", Courier, monospace;
+    width: 21.5rem;
+    padding: 10px;
+    font-size: 15px;
+  }
+  select {
+    font-family: "Courier New", Courier, monospace;
+    width: 21.5rem;
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+header {
+  min-height: 2rem;
+  .header-h2 {
+    margin-left: 5rem;
+  }
+}

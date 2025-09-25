@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "./Dashboard.css";
 
 const Item = () => {
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -19,7 +19,7 @@ const Item = () => {
         const response = await getItems();
         if (response) {
           console.log(response);
-          setItems(response.data);
+          // setItems(response.data);
         }
       } catch (error) {
         toast.error(error.message);
@@ -28,6 +28,20 @@ const Item = () => {
 
     fetchData();
   }, []);
+
+  const items = [
+    {
+      _id:"1",
+      itemCode:"1255",
+      itemName:"Solar panel",
+    },
+    {
+      _id:"2",
+      itemCode:"1256",
+      itemName:"Solar Light"
+    }
+
+  ]
 
   const openAddItem = () => {
     window.electronAPI.send("open-add-item");
@@ -48,59 +62,50 @@ const Item = () => {
         </button>
       </section>
 
-      <div className="container">
+      <div className="container-item">
         {Array.isArray(items) && items.length > 0 ? (
-          <div className="table-container">
-            <table className="table">
-              <thead className="table-header">
-                <tr>
-                  <th className="table-header-row">Item Code</th>
-                  <th className="table-header-row">Item Name</th>
-                  <th className="table-header-row">Category</th>
-                  <th className="table-header-row">Unit Price</th>
-                  <th className="table-header-row">Selling Price</th>
-                  <th className="table-header-row">Discount</th>
-                  <th className="table-header-row">No of Items</th>
+          <table className="table-item">
+            <thead>
+              <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Selling Price</th>
+                <th>Discount</th>
+                <th>No of Items</th>
+              </tr>
+            </thead>
+            <tbody>
+             {items.map((item) => (
+                <tr
+                  key={item?._doc?._id || item?._id}
+                  onClick={() => openUpdateDeleteItem(item?._id)}
+                >
+                  <td>{item?._doc?.itemCode || item?.itemCode}</td>
+                  <td>{item?._doc?.itemName || item?.itemName}</td>
+                  <td>
+                    {item?._doc?.categoryID.categoryName ||
+                      item?.categoryID?.categoryName}
+                  </td>
+                  <td>
+                    {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
+                  </td>
+                  <td>
+                    {formatNumber(
+                      item?._doc?.sellingPrice || item?.sellingPrice
+                    )}
+                  </td>
+                  <td>
+                    {formatNumber(item?._doc?.discount || item?.discount)}
+                  </td>
+                  <td>{item?._doc?.stock || item?.stock}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <tr
-                    key={item?._doc?._id || item?._id}
-                    className="table-body-tr"
-                    onClick={() => openUpdateDeleteItem(item?._id)}
-                  >
-                    <td className="table-body-td">
-                      {item?._doc?.itemCode || item?.itemCode}
-                    </td>
-                    <td className="table-body-td">
-                      {item?._doc?.itemName || item?.itemName}
-                    </td>
-                    <td className="table-body-td">
-                      {item?._doc?.categoryID.categoryName ||
-                        item?.categoryID?.categoryName}
-                    </td>
-                    <td className="table-body-td">
-                      {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
-                    </td>
-                    <td className="table-body-td">
-                      {formatNumber(
-                        item?._doc?.sellingPrice || item?.sellingPrice
-                      )}
-                    </td>
-                    <td className="table-body-td">
-                      {formatNumber(item?._doc?.discount || item?.discount)}
-                    </td>
-                    <td className="table-body-td">
-                      {item?._doc?.stock || item?.stock}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         ) : (
-          <div className="">No items available...</div>
+          <p>No Items</p>
         )}
       </div>
     </div>

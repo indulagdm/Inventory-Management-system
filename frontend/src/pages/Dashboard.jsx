@@ -9,7 +9,7 @@ import { Buffer } from "buffer";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -24,7 +24,7 @@ const Dashboard = () => {
         const response = await getItems();
         if (response) {
           console.log(response);
-          setItems(response.data);
+          // setItems(response.data);
         }
       } catch (error) {
         toast.error(error.message);
@@ -42,83 +42,75 @@ const Dashboard = () => {
   //   window.electronAPI.send("open-add-category");
   // };
 
-  
-
   const openUpdateStock = (itemID) => {
     window.electronAPI.send("open-update-stock", itemID);
   };
 
+  const items = [
+    {
+      _id: "1",
+      itemCode: "1255",
+      itemName: "Solar panel",
+    },
+    {
+      _id: "2",
+      itemCode: "1256",
+      itemName: "Solar Light",
+    },
+  ];
+
   return (
-    <div className="container">
-      <div className="">
+    <div>
+      <header>
+        <h1 className="header-h1">Inventory</h1>
+      </header>
 
-        <header>
-
-        </header>
-      </div>
-
-      {/* Items Table */}
-      {Array.isArray(items) && items.length > 0 ? (
-        <div className="table-container">
-          <table className="table" border={1}>
-            <thead className="table-header">
+      <div className="container-items-inventory">
+        {Array.isArray(items) && items.length > 0 ? (
+          <table className="table-items-inventory">
+            <thead>
               <tr>
-                <th className="table-header-row">Item Code</th>
-                <th className="table-header-row">Item Name</th>
-                <th className="table-header-row">Category</th>
-                <th className="table-header-row">Unit Price</th>
-                <th className="table-header-row">Selling Price</th>
-                <th className="table-header-row">Discount</th>
-                <th className="table-header-row">No of Items</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Selling Price</th>
+                <th>Discount</th>
+                <th>No of Items</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
                 <tr
                   key={item?._doc?._id || item?._id}
-                  className="table-body-tr"
                   onClick={() => openUpdateStock(item?._id)}
                 >
-                  <td className="table-body-td">
-                    {item?._doc?.itemCode || item?.itemCode}
-                  </td>
-                  <td className="table-body-td">
-                    {item?._doc?.itemName || item?.itemName}
-                  </td>
-                  <td className="table-body-td">
+                  <td>{item?._doc?.itemCode || item?.itemCode}</td>
+                  <td>{item?._doc?.itemName || item?.itemName}</td>
+                  <td>
                     {item?._doc?.categoryID.categoryName ||
                       item?.categoryID?.categoryName}
                   </td>
-                  <td className="table-body-td">
+                  <td>
                     {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
                   </td>
-                  <td className="table-body-td">
+                  <td>
                     {formatNumber(
                       item?._doc?.sellingPrice || item?.sellingPrice
                     )}
                   </td>
-                  <td className="table-body-td">
+                  <td>
                     {formatNumber(item?._doc?.discount || item?.discount)}
                   </td>
-                  <td className="table-body-td">
-                    {item?._doc?.stock || item?.stock}
-                    {/* <button
-                      onClick={() => openUpdateDeleteItem(item?._id)}
-                      className="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 transition-colors duration-200"
-                    >
-                      Action
-                    </button> */}
-                  </td>
+                  <td>{item?._doc?.stock || item?.stock}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      ) : (
-        <div className="text-center text-gray-600 py-8">
-          No items available...
-        </div>
-      )}
+        ) : (
+          <p>No Items</p>
+        )}
+      </div>
 
       {/* Popover for Update/Delete */}
       {/* {Array.isArray(items) &&

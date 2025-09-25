@@ -48,32 +48,149 @@ table th {
 
 header {
   min-height: 2rem;
-  margin-left: 20%;
 }
 
 .add-button-section {
-  margin-left: 20%;
+  min-height: 2rem;
 }
 
-section {
-  .add-button {
-    padding: 3%;
-    width: 10rem;
-    background-color: rgb(40, 138, 40);
-    border: 0.5px solid black;
-    font-family: "Courier New", Courier, monospace;
-    border-radius: 5px;
+/* .add-button {
+  padding: 3%;
+  width: 10rem;
+  background-color: rgb(40, 138, 40);
+  border: 0.5px solid black;
+  font-family: "Courier New", Courier, monospace;
+  border-radius: 5px;
+}
+
+.add-button :hover {
+  background-color: rgb(29, 101, 29);
+  cursor: pointer;
+  border: 0.5px solid black;
+} */
+
+.footer-part {
+  margin-top: 28vw;
+  font-size: 10px;
+  overflow-x: auto;
+}
+
+.container-item {
+  justify-self: center;
+}
+
+.table-item {
+  border-collapse: collapse;
+  margin-left: 5rem;
+
+  thead {
+    font-size: 15px;
   }
 
-  .add-button :hover {
-    background-color: rgb(29, 101, 29);
+  th {
+    background-color: #bdbdbd;
+  }
+
+  th,
+  td {
+    width: 250px;
+  }
+
+  th:hover {
+    cursor: not-allowed;
+  }
+
+  td:hover {
     cursor: pointer;
-    border: 0.5px solid black ;
   }
 }
 
-.footer-part{
-    margin-top: 26vw;
-    font-size: 10px;
-    overflow-x: auto;
+.container-item {
+  justify-self: center;
+}
+
+.container-category {
+  min-height: 80vh;
+}
+
+.table-category {
+  border-collapse: collapse;
+  margin-left: 5rem;
+
+  thead {
+    font-size: 15px;
+  }
+
+  th,
+  td {
+    width: 250px;
+  }
+
+  th {
+    background-color: #bdbdbd;
+  }
+
+  th:hover {
+    cursor: not-allowed;
+  }
+
+  td:hover {
+    cursor: pointer;
+  }
+}
+
+header {
+  .header-h1 {
+    margin-left: 5rem;
+  }
+}
+
+.add-button-section {
+  .add-button {
+    margin-left: 5rem;
+    background-color: rgb(83, 229, 70);
+    padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: none;
+    min-width: 10rem;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .add-button:hover {
+    background-color: rgb(52, 213, 37);
+    border-radius: 2px;
+    cursor: pointer;
+  }
+}
+
+.container-items-inventory {
+  justify-self: center;
+}
+
+.table-items-inventory {
+  border-collapse: collapse;
+  margin-left: 5rem;
+
+  thead {
+    font-size: 15px;
+  }
+
+  th,
+  td {
+    width: 250px;
+  }
+
+  th {
+    background-color: #bdbdbd;
+  }
+
+  th:hover {
+    cursor: not-allowed;
+  }
+
+  td:hover {
+    cursor: pointer;
+  }
 }
