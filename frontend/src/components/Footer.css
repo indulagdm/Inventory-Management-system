@@ -1,0 +1,21 @@
+.footer-container {
+  height: 50px;
+  background-color: antiquewhite;
+  display: flex;
+  margin-top: 100vh;
+}
+
+.footer-left {
+  width: 50%;
+}
+.footer-right {
+  width: 50%;
+}
+
+.social-icon{
+    display: flex;
+}
+
+.footer-social{
+    display: flex;
+}

@@ -1,66 +1,195 @@
 /* .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: #1a1a1a;
-      color: #fff;
-      padding-top: 20px;
-      position: fixed;
-    }
-    .sidebar-item {
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .sidebar-item:hover {
-      background-color: #333;
-    }
-    .sidebar-item img {
-      margin-right: 10px;
-    }
-    .sidebar-item.active {
-      background-color: #444;
-      border-radius: 0 20px 20px 0;
-    } */
+  width: 250px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: #fff;
+  padding-top: 20px;
+  position: fixed;
+}
+.sidebar-item {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.sidebar-item:hover {
+  background-color: #333;
+}
+.sidebar-item img {
+  margin-right: 10px;
+}
+.sidebar-item.active {
+  background-color: #444;
+  border-radius: 0 20px 20px 0;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.logo-container img {
+  width: 48px;
+  height: 48px;
+}
+.logo-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 8px;
+} */
 
-    .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: #1a1a1a;
-      color: #fff;
-      padding-top: 20px;
-      position: fixed;
-    }
-    .sidebar-item {
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .sidebar-item:hover {
-      background-color: #333;
-    }
-    .sidebar-item img {
-      margin-right: 10px;
-    }
-    .sidebar-item.active {
-      background-color: #444;
-      border-radius: 0 20px 20px 0;
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 32px;
-    }
-    .logo-container img {
-      width: 48px;
-      height: 48px;
-    }
-    .logo-container h2 {
-      font-size: 24px;
-      font-weight: bold;
-      margin-left: 8px;
-    }
+/* .sidebar{
+  width: 15vw;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: #fff;
+  position: fixed;
+  font-family: 'Courier New', Courier, monospace;
+  left: 0%;
+  top: 0%;
+}
+
+.logo-container{
+  align-items: center;
+}
+.company-name{
+  font-size: 20px;
+}
+
+.side-items-ul ul{
+  list-style: none;
+  margin-left: -2.5rem;
+}
+
+.side-item-li li{
+  min-height: 1.5rem;
+  min-width: 140px;
+  margin: 10%;
+  padding: 5%;
+}
+
+.side-item-li :hover{
+  color: black;
+  background-color: aliceblue;
+  border-radius: 10%;
+}
+
+.side-item-li li span{
+  margin-right: 5%;
+}
+
+.side-item-li li .label-logo{
+  margin-left: 20%;
+}
+
+.logo{
+  width: 50px;
+  padding: 5%;
+}
+
+.logo-container{
+  justify-items: center;
+  justify-self: center;
+} */
+
+/* Sidebar container */
+aside {
+  width: 250px;
+  min-height: 100vh;
+  background: #1e1e2f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  position: fixed; /* keeps sidebar fixed on the left */
+  top: 0;
+  left: 0;
+}
+
+/* Logo section */
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Sidebar items */
+.side-items-ul ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-item-li {
+  margin: 10px 0;
+}
+
+.side-item-li li {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Icon inside label */
+.label-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.side-item-logo {
+  font-size: 20px;
+}
+
+/* Hover effect */
+.side-item-li li:hover {
+  background: #33334d;
+  color: #00d4ff; /* highlight text/icon */
+}
+
+/* Active link style (optional, if you track active route) */
+.side-item-li li.active {
+  background: #00d4ff;
+  color: #fff;
+}
+
+.developer-name{
+  font-size: 10px;
+}
+
+.footer-part{
+  margin-top: 30rem;
+}
+
+/* Responsive for mobile */
+/* @media (max-width: 768px) {
+  aside {
+    width: 200px;
+    padding: 15px 10px;
+  }
+
+  .company-name {
+    font-size: 16px;
+  }
+
+  .side-item-logo {
+    font-size: 18px;
+  }
+} */

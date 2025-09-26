@@ -1,0 +1,42 @@
+.loading-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* .progress {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #1a2933;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-top: 10px;
+} */
+.progress {
+  width: 0%;
+  height: 100%;
+  background: #3498db;
+  animation: load 3s linear infinite;
+}
+@keyframes load {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40vw;
+  height: 40vh;
+  margin-left: 10rem;
+}
