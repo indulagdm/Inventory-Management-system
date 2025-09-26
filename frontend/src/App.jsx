@@ -9,6 +9,7 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Category from "./pages/Category";
 import Item from "./pages/Item";
+import UpdateStock from "./pages/UpdateStock";
 
 function App() {
   return (
@@ -40,9 +41,13 @@ function App() {
               path="/item-update-delete/:itemID"
               element={<ItemUpdateDelete />}
             />
+            <Route
+              path="/item-update-stock/:itemID"
+              element={<UpdateStock />}
+            />
 
-            <Route path="/item" element={<Item/>}/>
-            <Route path="/category" element={<Category/>}/>
+            <Route path="/items" element={<Item />} />
+            <Route path="/categories" element={<Category />} />
           </Routes>
         </Layout>
       </div>
