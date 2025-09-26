@@ -61,3 +61,12 @@ export const deleteItem = async (itemID) => {
     throw new Error(error.message);
   }
 };
+
+export const updateStock = async (itemID, data) => {
+  try {
+    const response = await window.electronAPI.updateStock(itemID, data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
