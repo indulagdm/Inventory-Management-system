@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { getCategories } from "../apis/api.js";
 import { toast } from "react-toastify";
+import Loading from "../components/Loading.jsx";
 
 const Category = () => {
   const [items, setItems] = useState([]);
+  const [isLoading,setIsLoading] = useState(true);
 
   // const formatNumber = (value) => {
   //   return Number(value || 0).toLocaleString("en-US", {
@@ -16,6 +18,7 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const response = await getCategories();
         if (response) {
           console.log(response);
@@ -23,6 +26,8 @@ const Category = () => {
         }
       } catch (error) {
         toast.error(error.message);
+      }finally{
+        setIsLoading(false)
       }
     };
 
@@ -45,6 +50,7 @@ const Category = () => {
 
   // ]
 
+  if(isLoading) return <Loading/>
   return (
     <div>
       <header>

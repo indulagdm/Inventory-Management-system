@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { getItems } from "../apis/api.js";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
+import Loading from "../components/Loading.jsx";
 
 const Item = () => {
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -16,6 +18,7 @@ const Item = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await getItems();
         if (response) {
           console.log(response);
@@ -23,6 +26,8 @@ const Item = () => {
         }
       } catch (error) {
         toast.error(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -50,6 +55,8 @@ const Item = () => {
   const openUpdateDeleteItem = (itemID) => {
     window.electronAPI.send("open-update-delete-item", itemID);
   };
+
+  if (isLoading) return <Loading />;
   return (
     <div>
       <header>
@@ -77,7 +84,7 @@ const Item = () => {
               </tr>
             </thead>
             <tbody>
-             {items.map((item) => (
+              {items.map((item) => (
                 <tr
                   key={item?._doc?._id || item?._id}
                   onClick={() => openUpdateDeleteItem(item?._id)}
@@ -105,7 +112,7 @@ const Item = () => {
             </tbody>
           </table>
         ) : (
-          <p style={{marginLeft:"5rem"}}>No Items</p>
+          <p style={{ marginLeft: "5rem" }}>No Items</p>
         )}
       </div>
     </div>

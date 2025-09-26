@@ -7,9 +7,11 @@ import CategoryAdd from "./CategoryAdd.jsx";
 import ItemUpdateDelete from "./ItemUpdateDelete.jsx";
 import { Buffer } from "buffer";
 import "./Dashboard.css";
+import Loading from "../components/Loading.jsx";
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
+  const [isLoading,setIsLoading] = useState(true);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -21,6 +23,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const response = await getItems();
         if (response) {
           console.log(response);
@@ -28,6 +31,8 @@ const Dashboard = () => {
         }
       } catch (error) {
         toast.error(error.message);
+      }finally{
+        setIsLoading(false)
       }
     };
 
@@ -58,6 +63,8 @@ const Dashboard = () => {
   //     itemName: "Solar Light",
   //   },
   // ];
+
+  if(isLoading) return <Loading/>
 
   return (
     <div>

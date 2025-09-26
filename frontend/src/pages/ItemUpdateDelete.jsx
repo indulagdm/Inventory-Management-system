@@ -7,7 +7,7 @@ import {
   getItemByID,
 } from "../apis/api.js";
 import { useParams, useNavigate } from "react-router-dom";
-import "./PopUpStyles.css"
+import "./PopUpStyles.css";
 
 const ItemUpdateDelete = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +20,7 @@ const ItemUpdateDelete = () => {
     discount: "",
     stock: "",
   });
+
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
