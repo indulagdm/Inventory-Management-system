@@ -1,8 +1,12 @@
-// components/ETFPrintPreview.jsx
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { downloadReport } from "../apis/api.js";
+import './PrintPreview.css'
 
-const PrintPreview = ({ htmlContent }) => {
+const PrintPreview = ({ invoiceID, htmlContent }) => {
   const [isPrinting, setIsPrinting] = useState(false);
+
+  console.log("invoice id", invoiceID);
 
   // const handlePrint = () => {
   // setIsPrinting(true);
@@ -38,36 +42,50 @@ const PrintPreview = ({ htmlContent }) => {
     };
   };
 
+  const handleDownloadPDF = async () => {
+    const response = await downloadReport(invoiceID, {
+      htmlContent,
+    });
+    if (response.success) {
+      toast.success(`PDF saved to: ${response.filePath}`);
+    } else {
+      toast.error(response.message || "PDF save canceled");
+    }
+  };
+
   return (
-    <div className={"styles.print_preview_container"}>
-      <div className={"styles.preview_header"}>
+    <div className={"print_preview_container"}>
+      <div className={"preview_header"}>
         <button
           onClick={handlePrint}
           disabled={isPrinting}
-          // style={{ marginLeft: "45%" }}
+          style={{ marginLeft: "45%" }}
         >
           {isPrinting ? "Printing..." : "Print Document"}
         </button>
+        <button onClick={handleDownloadPDF}>Download</button>
       </div>
 
       <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh", // Full viewport height for vertical centering
-          padding: "1rem", // Add some padding for smaller screens
-          boxSizing: "border-box",
-        }}
+        style={
+          {
+            // display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center",
+            // minHeight: "100vh", // Full viewport height for vertical centering
+            // padding: "1rem", // Add some padding for smaller screens
+            // boxSizing: "border-box",
+          }
+        }
       >
         <iframe
           title="invoice-preview"
           srcDoc={htmlContent}
           style={{
-            width: "210mm",
-            height: "297mm",
+            width: "242mm",
+            height: "297.2mm",
             border: "1px solid #ccc",
-            marginTop: "1rem",
+            marginLeft: "1rem",
           }}
         />
       </div>
