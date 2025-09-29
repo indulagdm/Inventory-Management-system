@@ -17,7 +17,9 @@ const Layout = ({ children }) => {
   const showNavbar =
     location.pathname === "/" ||
     location.pathname === "/items" ||
-    location.pathname === "/categories";
+    location.pathname === "/categories" ||
+    location.pathname === "/invoices" ||
+    location.pathname === "/print/:invoiceID";
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>

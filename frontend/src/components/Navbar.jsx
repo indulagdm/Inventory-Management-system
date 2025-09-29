@@ -2,6 +2,7 @@ import React from "react";
 import companyLogo from "../../public/images/vista-inventory.png";
 import { FaHome, FaUser, FaCog, FaBars } from "react-icons/fa";
 import { MdCategory, MdInventory } from "react-icons/md";
+import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
@@ -39,6 +40,14 @@ const Navbar = () => {
                   <MdInventory className="side-item-logo" />
                 </span>
                 <span>Item</span>
+              </li>
+            </div>
+            <div className="side-item-li">
+              <li onClick={() => navigate("/invoices")}>
+                <span className="label-logo">
+                  <FaFileInvoice className="side-item-logo" />
+                </span>
+                <span>Invoice</span>
               </li>
             </div>
           </ul>
