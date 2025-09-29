@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { createCategory } from "../apis/api.js";
 import "./PopUpStyles.css";
+import { useNavigate } from "react-router-dom";
 
 const CategoryAdd = () => {
   const [formData, setFormData] = useState({ categoryName: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!formData.categoryName) {
@@ -22,7 +24,7 @@ const CategoryAdd = () => {
 
       if (response?.success) {
         toast.success("Category added successfully");
-        window.location.reload();
+        navigate("/category");
       } else {
         toast.error(response?.error?.message || "Failed to add category");
       }
@@ -31,6 +33,8 @@ const CategoryAdd = () => {
     } finally {
       setIsLoading(false);
     }
+
+    window.close();
   };
 
   const handleChange = async (e) => {

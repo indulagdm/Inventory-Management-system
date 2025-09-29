@@ -50,7 +50,7 @@ const ItemAdd = () => {
 
       if (response?.success) {
         toast.success("Item added successfully");
-        navigate("/");
+        navigate("/items");
       } else {
         toast.error(response?.error?.message || "Failed to add item");
       }
