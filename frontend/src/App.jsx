@@ -10,6 +10,9 @@ import Layout from "./components/Layout";
 import Category from "./pages/Category";
 import Item from "./pages/Item";
 import UpdateStock from "./pages/UpdateStock";
+import Invoice from "./pages/Invoice";
+import InvoiceAdd from "./pages/InvoiceAdd";
+import PrintInvoice from "./pages/PrintInvoice";
 
 function App() {
   return (
@@ -37,6 +40,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/item-add" element={<ItemAdd />} />
             <Route path="/category-add" element={<CategoryAdd />} />
+            <Route path="/invoice-add" element={<InvoiceAdd />} />
             <Route
               path="/item-update-delete/:itemID"
               element={<ItemUpdateDelete />}
@@ -48,6 +52,9 @@ function App() {
 
             <Route path="/items" element={<Item />} />
             <Route path="/categories" element={<Category />} />
+            <Route path="/invoices" element={<Invoice />} />
+
+            <Route path="/print/:invoiceID" element={<PrintInvoice />} />
           </Routes>
         </Layout>
       </div>
