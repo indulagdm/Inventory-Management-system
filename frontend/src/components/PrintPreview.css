@@ -3,6 +3,8 @@
 
 header {
   padding: 20px;
+  margin-left: 25%;
+  gap: 50px;
 }
 
 header button {
@@ -19,4 +21,6 @@ header button:hover {
 }
 
 .report-preview-container {
+    margin-left: 10%;
 }
+

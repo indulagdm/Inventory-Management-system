@@ -110,14 +110,14 @@ aside {
 /* Logo section */
 .logo-container {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+  width: 100%;
 }
 
 .company-name {
@@ -139,6 +139,7 @@ aside {
 
 .side-item-li li {
   display: flex;
+  flex-direction: row;
   align-items: center;
   padding: 12px 15px;
   border-radius: 8px;
@@ -151,7 +152,7 @@ aside {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 2rem;
 }
 
 .side-item-logo {
@@ -161,21 +162,20 @@ aside {
 /* Hover effect */
 .side-item-li li:hover {
   background: #33334d;
-  color: #00d4ff; /* highlight text/icon */
+  color: #00d4ff;
 }
 
-/* Active link style (optional, if you track active route) */
 .side-item-li li.active {
   background: #00d4ff;
   color: #fff;
 }
 
-.developer-name{
+.developer-name {
   font-size: 10px;
 }
 
-.footer-part{
-  margin-top: 30rem;
+.footer-part {
+  margin-top: 10rem;
 }
 
 /* Responsive for mobile */

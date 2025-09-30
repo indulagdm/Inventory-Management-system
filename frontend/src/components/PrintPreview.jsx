@@ -52,13 +52,13 @@ const PrintPreview = ({ invoiceID, htmlContent }) => {
   };
 
   return (
-    <div className={"preview-container"}>
+    <div className="preview-container">
       <header>
-        <div className={"header"}>
+        <div className="header">
           <button
             onClick={handlePrint}
             disabled={isPrinting}
-            style={{ marginLeft: "45%" }}
+            style={{ marginLeft: "35%" }}
           >
             {isPrinting ? "Printing..." : "Print Document"}
           </button>

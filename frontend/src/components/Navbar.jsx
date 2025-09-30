@@ -14,7 +14,7 @@ const Navbar = () => {
       <aside>
         <div className="logo-container">
           <img src={companyLogo} alt="company Logo" className="logo" />
-          <h2 className="company-name">Vista Inventory</h2>
+          <h2 className="company-name">Inventory</h2>
         </div>
         <div className="side-items-ul">
           <ul>
