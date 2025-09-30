@@ -1,5 +1,5 @@
 import React from "react";
-import companyLogo from "../../public/images/vista-inventory.png";
+import companyLogo from "../../public/images/Vista-International-rm-background.png";
 import { FaHome, FaUser, FaCog, FaBars } from "react-icons/fa";
 import { MdCategory, MdInventory } from "react-icons/md";
 import { FaFileInvoice } from "react-icons/fa";

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { downloadReport } from "../apis/api.js";
-import './PrintPreview.css'
+import "./PrintPreview.css";
 
 const PrintPreview = ({ invoiceID, htmlContent }) => {
   const [isPrinting, setIsPrinting] = useState(false);
-
-  console.log("invoice id", invoiceID);
 
   // const handlePrint = () => {
   // setIsPrinting(true);
@@ -54,41 +52,34 @@ const PrintPreview = ({ invoiceID, htmlContent }) => {
   };
 
   return (
-    <div className={"print_preview_container"}>
-      <div className={"preview_header"}>
-        <button
-          onClick={handlePrint}
-          disabled={isPrinting}
-          style={{ marginLeft: "45%" }}
-        >
-          {isPrinting ? "Printing..." : "Print Document"}
-        </button>
-        <button onClick={handleDownloadPDF}>Download</button>
-      </div>
+    <div className={"preview-container"}>
+      <header>
+        <div className={"header"}>
+          <button
+            onClick={handlePrint}
+            disabled={isPrinting}
+            style={{ marginLeft: "45%" }}
+          >
+            {isPrinting ? "Printing..." : "Print Document"}
+          </button>
+          <button onClick={handleDownloadPDF}>Download</button>
+        </div>
+      </header>
 
-      <div
-        style={
-          {
-            // display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center",
-            // minHeight: "100vh", // Full viewport height for vertical centering
-            // padding: "1rem", // Add some padding for smaller screens
-            // boxSizing: "border-box",
-          }
-        }
-      >
-        <iframe
-          title="invoice-preview"
-          srcDoc={htmlContent}
-          style={{
-            width: "242mm",
-            height: "297.2mm",
-            border: "1px solid #ccc",
-            marginLeft: "1rem",
-          }}
-        />
-      </div>
+      <section>
+        <div className="report-preview-container">
+          <iframe
+            title="invoice-preview"
+            srcDoc={htmlContent}
+            style={{
+              width: "242mm",
+              height: "297.2mm",
+              border: "1px solid #ccc",
+              marginLeft: "1rem",
+            }}
+          />
+        </div>
+      </section>
     </div>
   );
 };

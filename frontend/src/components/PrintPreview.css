@@ -1,0 +1,22 @@
+.preview-container {
+}
+
+header {
+  padding: 20px;
+}
+
+header button {
+  margin-left: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #1e1e2f;
+  color: white;
+}
+
+header button:hover {
+  background-color: #33334d;
+  color: #00d4ff;
+}
+
+.report-preview-container {
+}

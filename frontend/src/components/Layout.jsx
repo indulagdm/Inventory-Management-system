@@ -18,8 +18,7 @@ const Layout = ({ children }) => {
     location.pathname === "/" ||
     location.pathname === "/items" ||
     location.pathname === "/categories" ||
-    location.pathname === "/invoices" ||
-    location.pathname === "/print/:invoiceID";
+    location.pathname === "/invoices";
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
