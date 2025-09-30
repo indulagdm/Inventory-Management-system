@@ -128,18 +128,18 @@ const InvoiceUpdateDelete = () => {
     fetchData();
   }, [invoiceID]);
 
-//   useEffect(() => {
-//     const updatedItems = formData.item.map((item) => {
-//       const selectedItem = items.find((i) => i._id === item.itemID);
-//       const total_item = item.quantity * price - (item.discount || 0);
-//       return { ...item, total_item };
-//     });
-//     const total = updatedItems.reduce(
-//       (sum, item) => sum + (item.total_item || 0),
-//       0
-//     );
-//     setFormData((prev) => ({ ...prev, item: updatedItems, total }));
-//   }, [formData.item, items]);
+  //   useEffect(() => {
+  //     const updatedItems = formData.item.map((item) => {
+  //       const selectedItem = items.find((i) => i._id === item.itemID);
+  //       const total_item = item.quantity * price - (item.discount || 0);
+  //       return { ...item, total_item };
+  //     });
+  //     const total = updatedItems.reduce(
+  //       (sum, item) => sum + (item.total_item || 0),
+  //       0
+  //     );
+  //     setFormData((prev) => ({ ...prev, item: updatedItems, total }));
+  //   }, [formData.item, items]);
 
   //   useEffect(() => {
   //     const savedData = localStorage.getItem("invoiceData");
@@ -186,13 +186,20 @@ const InvoiceUpdateDelete = () => {
     setFormData((prev) => ({ ...prev, item: updatedItems }));
   };
 
+  const formatNumber = (value) => {
+    return Number(value || 0).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   return (
     <div>
       <header>
         <h2 className="header-h2">Update Invoice</h2>
       </header>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="item-container">
           <div className="input-container">
             <input
@@ -217,6 +224,7 @@ const InvoiceUpdateDelete = () => {
               className="item-input"
               placeholder=" "
               disabled={isLoading}
+              readOnly
             />
             <span className="placeholder">Customer Name</span>
           </div>
@@ -230,6 +238,7 @@ const InvoiceUpdateDelete = () => {
               className="item-input"
               placeholder=" "
               disabled={isLoading}
+              readOnly
             />
             <span className="placeholder">Customer Address</span>
           </div>
@@ -243,30 +252,33 @@ const InvoiceUpdateDelete = () => {
               className="item-input"
               placeholder=" "
               disabled={isLoading}
+              readOnly
             />
             <span className="placeholder">Customer Mobile Number</span>
           </div>
 
           {Array.isArray(formData.item) && formData.item.length > 0 ? (
             <div>
-              <pre>{JSON.stringify(formData.item, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(formData.item, null, 2)}</pre> */}
 
               <table className="table-invoice-item">
                 <thead>
                   <tr>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Discount</th>
-                    <th>Total</th>
+                    <th className="th-table-name">Item Name</th>
+                    <th className="th-table-qty">Qty</th>
+                    <th className="th-table-discount">Discount</th>
+                    <th className="th-table-total">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {formData.item.map((item, index) => (
                     <tr key={index}>
-                      <td>{item.itemID.itemName}</td>
-                      <td>{item.quantity}</td>
-                      <td>{item.discount}</td>
-                      <td>{item.total_item}</td>
+                      <td className="td-table-name">{item.itemID.itemName}</td>
+                      <td className="td-table-qty">{item.quantity}</td>
+                      <td className="td-table-discount">{item.discount}</td>
+                      <td className="td-table-total">
+                        {formatNumber(item.total_item)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -457,13 +469,13 @@ const InvoiceUpdateDelete = () => {
               name="total"
               value={formData.total}
               className="item-input"
-              placeholder=" "
-              disabled
+              placeholder=""
+              readOnly
             />
             <span className="placeholder">Invoice Total</span>
           </div>
 
-          <button
+          {/* <button
             type="submit"
             style={{
               padding: "10px 20px",
@@ -476,7 +488,11 @@ const InvoiceUpdateDelete = () => {
             disabled={isLoading}
           >
             {isLoading ? "Submitting..." : "Submit Invoice"}
-          </button>
+          </button> */}
+
+          <div className="print-delete-area">
+            <button className="delete-invoice">Delete</button>
+          </div>
         </div>
       </form>
     </div>

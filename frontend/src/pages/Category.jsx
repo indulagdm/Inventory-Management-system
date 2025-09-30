@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./Dashboard.css";
 import { getCategories } from "../apis/api.js";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
+import "./Dashboard.css";
 
 const Category = () => {
   const [items, setItems] = useState([]);
   const [isLoading,setIsLoading] = useState(true);
-
-  // const formatNumber = (value) => {
-  //   return Number(value || 0).toLocaleString("en-US", {
-  //     minimumFractionDigits: 2,
-  //     maximumFractionDigits: 2,
-  //   });
-  // };
 
   useEffect(() => {
     const fetchData = async () => {

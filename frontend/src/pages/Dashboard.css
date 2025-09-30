@@ -141,7 +141,15 @@ header {
 
 header {
   .header-h1 {
-    margin-left: 5rem;
+   display: flex;
+   flex-direction: column;
+   margin-left: -12rem;
+  }
+
+  .header-h2 {
+    display: flex;
+    flex-direction: column;
+    margin-left: -5rem;
   }
 }
 
@@ -155,7 +163,7 @@ header {
     margin-bottom: 1rem;
     border: none;
     min-width: 10rem;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
     color: white;
   }
 
@@ -195,4 +203,39 @@ header {
   td:hover {
     cursor: pointer;
   }
+}
+
+.table-invoice-item {
+  border-collapse: collapse;
+  min-width: 350px;
+  border: 2px solid #ccc;
+  margin-left: 1rem;
+}
+
+thead {
+  height: 2rem;
+}
+
+.th-table-name {
+  width: 50%;
+}
+
+.th-table-qty {
+  width: 10%;
+}
+
+.th-table-discount {
+  width: 10%;
+}
+
+.th-table-total {
+  width: 30%;
+}
+
+.print-delete-area {
+  gap: 2rem;
+}
+
+.popup-container{
+  min-height: 20vh;
 }

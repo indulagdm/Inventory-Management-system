@@ -1,23 +1,27 @@
 .report-container{
-    margin-left: 12rem;
+    
 }
 
 .report-area{
+    
 }
 
 .report-header{
+    margin-left: 20%;
     display: flex;
 }
 
 .fa-arrow-left{
     margin-top: 2rem;
-    margin-right: 25%;
+    margin-right: 30%;
+    
+}
+
+.fa-arrow-left:hover{
+    cursor: pointer;
 }
 
 .report{
+    margin-left: 10%;
 }   
 
-body{
-    margin: 0;
-    padding: 0;
-}

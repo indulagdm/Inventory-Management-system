@@ -82,7 +82,7 @@ const UpdateStock = () => {
     //   </form>
     // </div>
 
-    <div>
+    <div className="popup-container">
       <header>
         <h2 className="header-h2">Update stock</h2>
       </header>

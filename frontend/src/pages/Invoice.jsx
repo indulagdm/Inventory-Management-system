@@ -3,7 +3,7 @@ import { getInvoices } from "../apis/api.js";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
 import { useNavigate } from "react-router-dom";
-import './Invoice.css'
+import "./Dashboard.css";
 
 const Invoice = () => {
   const [invoice, setInvoice] = useState([]);
@@ -76,7 +76,7 @@ const Invoice = () => {
               {invoice.map((invoice) => (
                 <tr
                   key={invoice?._doc?._id || invoice?._id}
-                  onClick={() => openUpdateDeleteInvoice(invoice?._id)}
+                  onDoubleClick={() => openUpdateDeleteInvoice(invoice?._id)}
                 >
                   <td>{invoice?._doc?.invoiceNo || invoice?.invoiceNo}</td>
                   <td>
@@ -91,14 +91,12 @@ const Invoice = () => {
                   <td>
                     {formatNumber(invoice?._doc?.total || invoice?.total)}
                   </td>
-                  <td>
-                    <button
-                      onClick={() =>
-                        navigate(`/print/${invoice?._doc?._id || invoice?._id}`)
-                      }
-                    >
-                      Print
-                    </button>
+                  <td
+                    onClick={() =>
+                      navigate(`/print/${invoice?._doc?._id || invoice?._id}`)
+                    }
+                  >
+                    Print
                   </td>
                 </tr>
               ))}
