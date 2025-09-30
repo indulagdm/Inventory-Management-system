@@ -284,7 +284,7 @@ const InvoiceAdd = () => {
             Add Item
           </button>
 
-          <pre>{JSON.stringify(formData, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
 
           <button
             type="submit"

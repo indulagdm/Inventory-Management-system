@@ -3,6 +3,7 @@ import { getInvoices } from "../apis/api.js";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
 import { useNavigate } from "react-router-dom";
+import './Invoice.css'
 
 const Invoice = () => {
   const [invoice, setInvoice] = useState([]);
@@ -12,6 +13,10 @@ const Invoice = () => {
 
   const openAddInvoice = () => {
     window.electronAPI.send("open-add-invoice");
+  };
+
+  const openUpdateDeleteInvoice = (invoiceID) => {
+    window.electronAPI.send("open-update-delete-invoice", invoiceID);
   };
 
   useEffect(() => {
@@ -71,7 +76,7 @@ const Invoice = () => {
               {invoice.map((invoice) => (
                 <tr
                   key={invoice?._doc?._id || invoice?._id}
-                  // onClick={() => openUpdateDeleteItem(item?._id)}
+                  onClick={() => openUpdateDeleteInvoice(invoice?._id)}
                 >
                   <td>{invoice?._doc?.invoiceNo || invoice?.invoiceNo}</td>
                   <td>
@@ -88,11 +93,9 @@ const Invoice = () => {
                   </td>
                   <td>
                     <button
-                      onClick={()=>navigate(
-                        `/print/${
-                          invoice?._doc?._id || invoice?._id
-                        }`
-                      )}
+                      onClick={() =>
+                        navigate(`/print/${invoice?._doc?._id || invoice?._id}`)
+                      }
                     >
                       Print
                     </button>

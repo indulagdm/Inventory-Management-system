@@ -4,6 +4,7 @@ import { createItem, getCategories } from "../apis/api.js";
 import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
 import "./PopUpStyles.css";
+import Loading from "../components/Loading.jsx";
 
 const ItemAdd = () => {
   const [formData, setFormData] = useState({
@@ -81,6 +82,8 @@ const ItemAdd = () => {
 
     fetchCategories();
   }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

@@ -1,0 +1,8 @@
+.table-invoice-item {
+  border-collapse: collapse;
+  min-width: 390px;
+}
+
+thead{
+  height: 2rem;
+}

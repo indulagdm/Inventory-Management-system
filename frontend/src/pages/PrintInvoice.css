@@ -1,0 +1,23 @@
+.report-container{
+    margin-left: 12rem;
+}
+
+.report-area{
+}
+
+.report-header{
+    display: flex;
+}
+
+.fa-arrow-left{
+    margin-top: 2rem;
+    margin-right: 25%;
+}
+
+.report{
+}   
+
+body{
+    margin: 0;
+    padding: 0;
+}
