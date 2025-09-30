@@ -70,3 +70,50 @@ export const updateStock = async (itemID, data) => {
     throw new Error(error.message);
   }
 };
+
+export const addInvoice = async (data) => {
+  try {
+    const response = await window.electronAPI.addInvoice(data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getInvoices = async () => {
+  try {
+    const response = await window.electronAPI.getInvoices();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const invoicePrint = async (invoiceID) => {
+  try {
+    const response = await window.electronAPI.printInvoice(invoiceID);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const downloadReport = async (invoiceID, { htmlContent }) => {
+  try {
+    const response = await window.electronAPI.downloadReport(invoiceID, {
+      htmlContent,
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getInvoiceByID = async (invoiceID) => {
+  try {
+    const response = await window.electronAPI.getInvoiceByID(invoiceID);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
