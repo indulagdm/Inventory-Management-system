@@ -11,7 +11,7 @@ import Loading from "../components/Loading.jsx";
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
-  const [isLoading,setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -23,7 +23,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         const response = await getItems();
         if (response) {
           console.log(response);
@@ -31,8 +31,8 @@ const Dashboard = () => {
         }
       } catch (error) {
         toast.error(error.message);
-      }finally{
-        setIsLoading(false)
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -64,7 +64,7 @@ const Dashboard = () => {
   //   },
   // ];
 
-  if(isLoading) return <Loading/>
+  if (isLoading) return <Loading />;
 
   return (
     <div>
@@ -131,6 +131,62 @@ const Dashboard = () => {
             <ItemUpdateDelete itemID={bufferConvertString(item?._doc || item)} />
           </div>
         ))} */}
+
+      <header>
+        <h1 className="header-h1" style={{ color: "red" }}>
+          Low Inventory
+        </h1>
+      </header>
+
+      <div className="container-items-inventory">
+        {Array.isArray(items) &&
+        items.filter((item) => item?.stock <= 5).length > 0 ? (
+          <table className="table-items-inventory" style={{ color: "red" }}>
+            <thead>
+              <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Selling Price</th>
+                <th>Discount</th>
+                <th>No of Items</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items
+                .filter((item) => item?.stock <= 5)
+                .map((item) => (
+                  <tr
+                    key={item?._doc?._id || item?._id}
+                    onClick={() => openUpdateStock(item?._id)}
+                  >
+                    <td>{item?._doc?.itemCode || item?.itemCode}</td>
+                    <td>{item?._doc?.itemName || item?.itemName}</td>
+                    <td>
+                      {item?._doc?.categoryID.categoryName ||
+                        item?.categoryID?.categoryName}
+                    </td>
+                    <td>
+                      {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
+                    </td>
+                    <td>
+                      {formatNumber(
+                        item?._doc?.sellingPrice || item?.sellingPrice
+                      )}
+                    </td>
+                    <td>
+                      {formatNumber(item?._doc?.discount || item?.discount)}
+                    </td>
+                    <td>{item?._doc?.stock || item?.stock}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No Items</p>
+        )}
+      </div>
     </div>
   );
 };

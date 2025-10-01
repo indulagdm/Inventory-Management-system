@@ -70,7 +70,8 @@ const Item = () => {
       </section>
 
       <div className="container-item">
-        {Array.isArray(items) && items.length > 0 ? (
+        {Array.isArray(items) &&
+        items.filter((item) => item?.status === "show").length > 0 ? (
           <table className="table-item">
             <thead>
               <tr>

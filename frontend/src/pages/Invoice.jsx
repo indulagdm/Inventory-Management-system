@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
-
+import { MdPrint } from "react-icons/md";
 const Invoice = () => {
   const [invoice, setInvoice] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,7 +96,7 @@ const Invoice = () => {
                       navigate(`/print/${invoice?._doc?._id || invoice?._id}`)
                     }
                   >
-                    Print
+                    <MdPrint />
                   </td>
                 </tr>
               ))}

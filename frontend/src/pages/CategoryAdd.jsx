@@ -52,33 +52,35 @@ const CategoryAdd = () => {
       </header>
 
       <form onSubmit={handleSubmit}>
-        <div className="input-container">
-          {/* <label className="">
+        <div className="item-container">
+          <div className="input-container">
+            {/* <label className="">
             Category Name
           </label> */}
-          <input
-            type="text"
-            name="categoryName"
-            value={formData.categoryName}
-            onChange={handleChange}
-            className="item-input"
-            placeholder=" "
-            step="0.01"
-            disabled={isLoading}
-          />
-          <span className="placeholder">Category Name</span>
-        </div>
+            <input
+              type="text"
+              name="categoryName"
+              value={formData.categoryName}
+              onChange={handleChange}
+              className="item-input"
+              placeholder=" "
+              step="0.01"
+              disabled={isLoading}
+            />
+            <span className="placeholder">Category Name</span>
+          </div>
 
-        <section>
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="add-button-item"
-            disabled={isLoading}
-          >
-            {isLoading ? "Submitting..." : "Submit"}
-          </button>
-        </section>
+          <section>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="add-button-item"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Submit"}
+            </button>
+          </section>
+        </div>
       </form>
     </div>
   );

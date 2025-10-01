@@ -141,16 +141,21 @@ header {
 
 header {
   .header-h1 {
-   display: flex;
-   flex-direction: column;
-   margin-left: -12rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: -12rem;
   }
 
   .header-h2 {
     display: flex;
     flex-direction: column;
     margin-left: -5rem;
+    margin-top: 0rem;
   }
+}
+
+.item-container {
+  margin-top: -3rem;
 }
 
 .add-button-section {
@@ -236,6 +241,61 @@ thead {
   gap: 2rem;
 }
 
-.popup-container{
+.popup-container {
   min-height: 20vh;
+}
+
+.header-category-h1 {
+  margin-left: -5.5rem;
+}
+
+/* .button-container-ia {
+  button {
+    width: 20rem;
+    padding: 10px;
+    margin: 20px;
+  }
+} */
+
+.item-update-button-ia {
+  background-color: #1e1e2f;
+  padding: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border: none;
+  width: 20rem;
+  font-size: 15px;
+  min-width: 10rem;
+  font-family: "Courier New", Courier, monospace;
+  margin-left: 2rem;
+  color: white;
+}
+
+.item-update-button-ia:hover {
+  background-color: #2ea430;
+  color: #ffffff;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.item-delete-button-ia {
+  background-color: #1e1e2f;
+  padding: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border: none;
+  width: 20rem;
+  margin: 30px;
+  font-size: 15px;
+  font-family: "Courier New", Courier, monospace;
+  color: white;
+}
+
+.item-delete-button-ia:hover {
+  background-color: #790000;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
 }

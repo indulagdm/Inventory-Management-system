@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { updateStock } from "../apis/api.js";
-import './PopUpStyles.css'
+import "./PopUpStyles.css";
 
 const UpdateStock = () => {
   const [formData, setFormData] = useState({
@@ -88,33 +88,35 @@ const UpdateStock = () => {
       </header>
 
       <form onSubmit={handleSubmit}>
-        <div className="input-container">
-          {/* <label className="">
+        <div className="item-container">
+          <div className="input-container">
+            {/* <label className="">
             Category Name
           </label> */}
-          <input
-            type="number"
-            name="stock"
-            value={formData.stock}
-            onChange={handleChange}
-            className="item-input"
-            placeholder=" "
-            step="1"
-            disabled={isLoading}
-          />
-          <span className="placeholder">Stock</span>
-        </div>
+            <input
+              type="number"
+              name="stock"
+              value={formData.stock}
+              onChange={handleChange}
+              className="item-input"
+              placeholder=" "
+              step="1"
+              disabled={isLoading}
+            />
+            <span className="placeholder">Stock</span>
+          </div>
 
-        <section>
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="add-button-item"
-            disabled={isLoading}
-          >
-            {isLoading ? "Submitting..." : "Submit"}
-          </button>
-        </section>
+          <section>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="add-button-item"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Submit"}
+            </button>
+          </section>
+        </div>
       </form>
     </div>
   );

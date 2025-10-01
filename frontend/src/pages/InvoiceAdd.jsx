@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getItems, addInvoice } from "../apis/api.js";
+import "./Dashboard.css";
 
 const InvoiceAdd = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,6 @@ const InvoiceAdd = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
 
   const handleItemInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -264,7 +264,7 @@ const InvoiceAdd = () => {
                 />
                 <span className="placeholder">Discount</span>
               </div>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleRemoveItem(index)}
                 style={{
@@ -276,12 +276,32 @@ const InvoiceAdd = () => {
                 }}
               >
                 Remove
-              </button>
+              </button> */}
+
+              <div className="button-container-ia">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveItem(index)}
+                  className="item-delete-button-ia"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Deleting..." : "Delete"}
+                </button>
+              </div>
             </div>
           ))}
 
-          <button type="button" onClick={handleAddItem} disabled={isLoading}>
+          {/* <button type="button" onClick={handleAddItem} disabled={isLoading}>
             Add Item
+          </button> */}
+
+          <button
+            type="button"
+            className="item-update-button-ia"
+            disabled={isLoading}
+            onClick={() => handleAddItem()}
+          >
+            {isLoading ? "Adding..." : "Add"}
           </button>
 
           {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}

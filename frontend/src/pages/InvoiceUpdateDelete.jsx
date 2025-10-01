@@ -491,7 +491,7 @@ const InvoiceUpdateDelete = () => {
           </button> */}
 
           <div className="print-delete-area">
-            <button className="delete-invoice">Delete</button>
+            <button className="item-delete-button-ia">Delete</button>
           </div>
         </div>
       </form>
