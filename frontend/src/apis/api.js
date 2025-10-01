@@ -8,6 +8,15 @@ export const createCategory = async (data) => {
     throw new Error(error.message);
   }
 };
+
+export const deleteCategory = async (categoryID) => {
+  try {
+    const response = await window.electronAPI.removeCategory(categoryID);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 export const createItem = async (data) => {
   try {
     const response = await window.electronAPI.createItem(data);
