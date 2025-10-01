@@ -1,0 +1,16 @@
+.titlebar{
+  background: #1e1e2f;
+  color: white;
+  height: 2rem;               /* include padding in height */
+  padding: 0 20px;            /* only horizontal padding */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-start; /* aligns children to left */
+  align-items: center;         /* vertically centers content */
+  -webkit-app-region: no-drag;
+  z-index: 1000;
+  gap: 2rem; 
+}
