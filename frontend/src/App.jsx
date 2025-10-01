@@ -13,6 +13,8 @@ import UpdateStock from "./pages/UpdateStock";
 import Invoice from "./pages/Invoice";
 import InvoiceAdd from "./pages/InvoiceAdd";
 import PrintInvoice from "./pages/PrintInvoice";
+import InvoiceUpdateDelete from "./pages/InvoiceUpdateDelete";
+import TitleBar from "./components/TitleBar";
 
 function App() {
   return (
@@ -44,6 +46,10 @@ function App() {
             <Route
               path="/item-update-delete/:itemID"
               element={<ItemUpdateDelete />}
+            />
+            <Route
+              path="/invoice-update-delete/:invoiceID"
+              element={<InvoiceUpdateDelete />}
             />
             <Route
               path="/item-update-stock/:itemID"
