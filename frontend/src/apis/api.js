@@ -126,3 +126,30 @@ export const getInvoiceByID = async (invoiceID) => {
     throw new Error(error.message);
   }
 };
+
+export const getNumberOfStock = async () => {
+  try {
+    const response = await window.electronAPI.noOfStock();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getNumberOfInStock = async () => {
+  try {
+    const response = await window.electronAPI.noOfInStock();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getNumberOfOutOfStock = async () => {
+  try {
+    const response = await window.electronAPI.noOfOutStock();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
