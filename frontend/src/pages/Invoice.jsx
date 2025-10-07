@@ -55,7 +55,7 @@ const Invoice = () => {
 
       <section className="add-button-section">
         <button onClick={() => openAddInvoice()} className="add-button">
-          Add Category
+          Add Invoice
         </button>
       </section>
 

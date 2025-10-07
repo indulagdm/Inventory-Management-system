@@ -1,5 +1,10 @@
 import React from "react";
-import { getItems } from "../apis/api.js";
+import {
+  getItems,
+  getNumberOfStock,
+  getNumberOfInStock,
+  getNumberOfOutOfStock,
+} from "../apis/api.js";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import ItemAdd from "./ItemAdd.jsx";
@@ -12,6 +17,8 @@ import Loading from "../components/Loading.jsx";
 const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [noStock, setNoStock] = useState();
+  const [noInStock, setNoInStock] = useState();
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -36,7 +43,47 @@ const Dashboard = () => {
       }
     };
 
+    const fetchNumberOfStock = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getNumberOfStock();
+        setNoStock(response.data);
+        console.log("stock", response);
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const fetchNumberOfInStock = async () => {
+      try {
+        const response = await getNumberOfInStock();
+        setNoInStock(response.data);
+        console.log("In stock", response.data);
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const fetchNumberOfOutOFStock = async () => {
+      try {
+        const response = await getNumberOfOutOfStock();
+        setNoInStock(response.data);
+        console.log("Out stock", response.data);
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchData();
+    fetchNumberOfStock();
+    fetchNumberOfInStock();
+    fetchNumberOfOutOFStock();
   }, []);
 
   // const openAddItem = () => {
@@ -69,8 +116,27 @@ const Dashboard = () => {
   return (
     <div>
       <header>
-        <h1 className="header-h1">Inventory</h1>
+        <h1 className="header-h1">Inventory Overview</h1>
       </header>
+
+      <div className="container-items-with-summary">
+        <section className="total-items">
+          <h2 className="total-item-header">Total Items</h2>
+          <p>{noStock}</p>
+        </section>
+
+        <section className="total-items">
+          <h2 className="total-item-header">Items in stock</h2>
+          <p>{noInStock}</p>
+        </section>
+
+        <section className="total-items">
+          <h2 className="total-item-header">Low Stock</h2>
+          <p>{}</p>
+        </section>
+      </div>
+
+      <div className="container-recent-transactions"></div>
 
       <div className="container-items-inventory">
         {Array.isArray(items) && items.length > 0 ? (
