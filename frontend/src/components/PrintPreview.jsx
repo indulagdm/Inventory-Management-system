@@ -58,7 +58,7 @@ const PrintPreview = ({ invoiceID, htmlContent }) => {
           <button
             onClick={handlePrint}
             disabled={isPrinting}
-            style={{ marginLeft: "35%" }}
+            style={{ marginLeft: "0%" }}
           >
             {isPrinting ? "Printing..." : "Print Document"}
           </button>
@@ -72,8 +72,8 @@ const PrintPreview = ({ invoiceID, htmlContent }) => {
             title="invoice-preview"
             srcDoc={htmlContent}
             style={{
-              width: "242mm",
-              height: "297.2mm",
+              width: "243.3mm",
+              height: "282.4mm",
               border: "1px solid #ccc",
               marginLeft: "1rem",
             }}
