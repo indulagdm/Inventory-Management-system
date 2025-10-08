@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  getItems,
-  getNumberOfStock,
-  getNumberOfInStock,
-  getNumberOfOutOfStock,
-} from "../apis/api.js";
+import { getItems, getRecentTransaction } from "../apis/api.js";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import ItemAdd from "./ItemAdd.jsx";
@@ -17,8 +12,7 @@ import Loading from "../components/Loading.jsx";
 const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [noStock, setNoStock] = useState();
-  const [noInStock, setNoInStock] = useState();
+  const [recentTransactions, setRecentTransactions] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -32,9 +26,10 @@ const Dashboard = () => {
       try {
         setIsLoading(true);
         const response = await getItems();
-        if (response) {
-          console.log(response);
+        if (response?.success) {
           setItems(response.data);
+        } else {
+          toast.error(response.error.message);
         }
       } catch (error) {
         toast.error(error.message);
@@ -43,36 +38,14 @@ const Dashboard = () => {
       }
     };
 
-    const fetchNumberOfStock = async () => {
+    const fetchRecentTransactions = async () => {
       try {
-        setIsLoading(true);
-        const response = await getNumberOfStock();
-        setNoStock(response.data);
-        console.log("stock", response);
-      } catch (error) {
-        toast.error(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchNumberOfInStock = async () => {
-      try {
-        const response = await getNumberOfInStock();
-        setNoInStock(response.data);
-        console.log("In stock", response.data);
-      } catch (error) {
-        toast.error(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchNumberOfOutOFStock = async () => {
-      try {
-        const response = await getNumberOfOutOfStock();
-        setNoInStock(response.data);
-        console.log("Out stock", response.data);
+        const response = await getRecentTransaction();
+        if (response?.success) {
+          setRecentTransactions(response.data);
+        } else {
+          toast.error(response.error.message);
+        }
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -81,9 +54,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-    fetchNumberOfStock();
-    fetchNumberOfInStock();
-    fetchNumberOfOutOFStock();
+    fetchRecentTransactions();
   }, []);
 
   // const openAddItem = () => {
@@ -94,9 +65,9 @@ const Dashboard = () => {
   //   window.electronAPI.send("open-add-category");
   // };
 
-  const openUpdateStock = (itemID) => {
-    window.electronAPI.send("open-update-stock", itemID);
-  };
+  // const openUpdateStock = (itemID) => {
+  //   window.electronAPI.send("open-update-stock", itemID);
+  // };
 
   // const items = [
   //   {
@@ -115,74 +86,79 @@ const Dashboard = () => {
 
   return (
     <div>
-      <header>
-        <h1 className="header-h1">Inventory Overview</h1>
-      </header>
+      <div className="overview-container">
+        <header>
+          <h1 className="header-h1-other">Inventory Overview</h1>
+        </header>
 
-      <div className="container-items-with-summary">
-        <section className="total-items">
-          <h2 className="total-item-header">Total Items</h2>
-          <p>{noStock}</p>
-        </section>
+        <div className="container-items-with-summary">
+          <section className="total-items">
+            <h2 className="total-item-header">Total Items</h2>
+            <p>{items?.length}</p>
+          </section>
 
-        <section className="total-items">
-          <h2 className="total-item-header">Items in stock</h2>
-          <p>{noInStock}</p>
-        </section>
+          <section className="total-items">
+            <h2 className="total-item-header">Items in stock</h2>
+            <p>
+              {items.filter((item) => item?.stockStatus === "in-stock").length}
+            </p>
+          </section>
 
-        <section className="total-items">
-          <h2 className="total-item-header">Low Stock</h2>
-          <p>{}</p>
-        </section>
+          <section className="total-items">
+            <h2 className="total-item-header">Low Stock</h2>
+            <p>
+              {items.filter((item) => item?.stockStatus === "low-stock").length}
+            </p>
+          </section>
+        </div>
       </div>
 
-      <div className="container-recent-transactions"></div>
+      <div className="overview-container">
+        <header>
+          <h1 className="header-h1-other">Recent Transactions</h1>
+        </header>
 
-      <div className="container-items-inventory">
-        {Array.isArray(items) && items.length > 0 ? (
-          <table className="table-items-inventory">
-            <thead>
-              <tr>
-                <th>Item Code</th>
-                <th>Item Name</th>
-                <th>Category</th>
-                <th>Unit Price</th>
-                <th>Selling Price</th>
-                <th>Discount</th>
-                <th>No of Items</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr
-                  key={item?._doc?._id || item?._id}
-                  onClick={() => openUpdateStock(item?._id)}
-                >
-                  <td>{item?._doc?.itemCode || item?.itemCode}</td>
-                  <td>{item?._doc?.itemName || item?.itemName}</td>
-                  <td>
-                    {item?._doc?.categoryID.categoryName ||
-                      item?.categoryID?.categoryName}
-                  </td>
-                  <td>
-                    {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
-                  </td>
-                  <td>
-                    {formatNumber(
-                      item?._doc?.sellingPrice || item?.sellingPrice
-                    )}
-                  </td>
-                  <td>
-                    {formatNumber(item?._doc?.discount || item?.discount)}
-                  </td>
-                  <td>{item?._doc?.stock || item?.stock}</td>
+        <div className="container-items-inventory">
+          {Array.isArray(recentTransactions) &&
+          recentTransactions.length > 0 ? (
+            <table className="table-items-inventory">
+              <thead>
+                <tr>
+                  <th>Item Code</th>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Unit Price</th>
+                  <th>Selling Price</th>
+                  <th>Discount</th>
+                  <th>No of Items</th>
+                  <th>Type</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No Items</p>
-        )}
+              </thead>
+              <tbody>
+                {recentTransactions.map((item) => (
+                  <tr
+                    key={item?._id}
+                    // onClick={() => openUpdateStock(item?._id)}
+                    className={
+                      item?.status === "purchase" ? "text-green" : "text-red"
+                    }
+                  >
+                    <td>{item?.itemID?.itemCode}</td>
+                    <td>{item?.itemID?.itemName}</td>
+                    <td>{item?.itemID?.categoryID?.categoryName}</td>
+                    <td>{formatNumber(item?.itemID?.unitPrice)}</td>
+                    <td>{formatNumber(item?.itemID?.sellingPrice)}</td>
+                    <td>{formatNumber(item?.itemID?.discount)}</td>
+                    <td>{item?.stock}</td>
+                    <td>{item?.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No Items</p>
+          )}
+        </div>
       </div>
 
       {/* Popover for Update/Delete */}
@@ -198,60 +174,62 @@ const Dashboard = () => {
           </div>
         ))} */}
 
-      <header>
-        <h1 className="header-h1" style={{ color: "red" }}>
-          Low Inventory
-        </h1>
-      </header>
+      <div className="overview-container">
+        <header>
+          <h1 className="header-h1-other" style={{ color: "red" }}>
+            Low Inventory
+          </h1>
+        </header>
 
-      <div className="container-items-inventory">
-        {Array.isArray(items) &&
-        items.filter((item) => item?.stock <= 5).length > 0 ? (
-          <table className="table-items-inventory" style={{ color: "red" }}>
-            <thead>
-              <tr>
-                <th>Item Code</th>
-                <th>Item Name</th>
-                <th>Category</th>
-                <th>Unit Price</th>
-                <th>Selling Price</th>
-                <th>Discount</th>
-                <th>No of Items</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items
-                .filter((item) => item?.stock <= 5)
-                .map((item) => (
-                  <tr
-                    key={item?._doc?._id || item?._id}
-                    onClick={() => openUpdateStock(item?._id)}
-                  >
-                    <td>{item?._doc?.itemCode || item?.itemCode}</td>
-                    <td>{item?._doc?.itemName || item?.itemName}</td>
-                    <td>
-                      {item?._doc?.categoryID.categoryName ||
-                        item?.categoryID?.categoryName}
-                    </td>
-                    <td>
-                      {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
-                    </td>
-                    <td>
-                      {formatNumber(
-                        item?._doc?.sellingPrice || item?.sellingPrice
-                      )}
-                    </td>
-                    <td>
-                      {formatNumber(item?._doc?.discount || item?.discount)}
-                    </td>
-                    <td>{item?._doc?.stock || item?.stock}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No Items</p>
-        )}
+        <div className="container-items-inventory">
+          {Array.isArray(items) &&
+          items.filter((item) => item?.stock <= 5).length > 0 ? (
+            <table className="table-items-inventory" style={{ color: "red" }}>
+              <thead>
+                <tr>
+                  <th>Item Code</th>
+                  <th>Item Name</th>
+                  <th>Category</th>
+                  <th>Unit Price</th>
+                  <th>Selling Price</th>
+                  <th>Discount</th>
+                  <th>No of Items</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items
+                  .filter((item) => item?.stock <= 5)
+                  .map((item) => (
+                    <tr
+                      key={item?._doc?._id || item?._id}
+                      // onClick={() => openUpdateStock(item?._id)}
+                    >
+                      <td>{item?._doc?.itemCode || item?.itemCode}</td>
+                      <td>{item?._doc?.itemName || item?.itemName}</td>
+                      <td>
+                        {item?._doc?.categoryID.categoryName ||
+                          item?.categoryID?.categoryName}
+                      </td>
+                      <td>
+                        {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
+                      </td>
+                      <td>
+                        {formatNumber(
+                          item?._doc?.sellingPrice || item?.sellingPrice
+                        )}
+                      </td>
+                      <td>
+                        {formatNumber(item?._doc?.discount || item?.discount)}
+                      </td>
+                      <td>{item?._doc?.stock || item?.stock}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No Items</p>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -24,9 +24,11 @@ const Invoice = () => {
       try {
         setIsLoading(true);
         const response = await getInvoices();
-        if (response) {
+        if (response?.success) {
           console.log(response);
           setInvoice(response.data);
+        } else {
+          toast.error(response.error.message);
         }
       } catch (error) {
         toast.error(error.message);
@@ -48,14 +50,14 @@ const Invoice = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div>
+    <div className="item-page-container">
       <header>
-        <h1 className="header-h1">Invoice</h1>
+        <h1 className="header-h1-other">Invoice</h1>
       </header>
 
       <section className="add-button-section">
         <button onClick={() => openAddInvoice()} className="add-button">
-          Add Invoice
+          + Add Invoice
         </button>
       </section>
 

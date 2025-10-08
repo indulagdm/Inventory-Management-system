@@ -20,9 +20,10 @@ const Item = () => {
       try {
         setIsLoading(true);
         const response = await getItems();
-        if (response) {
-          console.log(response);
+        if (response?.success) {
           setItems(response.data);
+        }else{
+          toast.error(response.error.message)
         }
       } catch (error) {
         toast.error(error.message);
@@ -58,14 +59,14 @@ const Item = () => {
 
   if (isLoading) return <Loading />;
   return (
-    <div>
+    <div className="item-page-container">
       <header>
-        <h1 className="header-h1">Items</h1>
+        <h1 className="header-h1-other">Items</h1>
       </header>
 
       <section className="add-button-section">
         <button onClick={() => openAddItem()} className="add-button">
-          Add Item
+          + Add Item
         </button>
       </section>
 

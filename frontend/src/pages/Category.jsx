@@ -14,9 +14,10 @@ const Category = () => {
       try {
         setIsLoading(true);
         const response = await getCategories();
-        if (response) {
-          console.log(response);
+        if (response.success) {
           setItems(response.data);
+        }else{
+          toast.error(response.error.message)
         }
       } catch (error) {
         toast.error(error.message);
@@ -38,7 +39,7 @@ const Category = () => {
     try {
       const response = await deleteCategory(categoryID);
 
-      if (response.success) {
+      if (response?.success) {
         toast.success(response.message);
         window.location.reload();
       } else {
@@ -57,12 +58,12 @@ const Category = () => {
   return (
     <div>
       <header>
-        <h1 className="header-category-h1">Category</h1>
+        <h1 className="header-h1-other">Category</h1>
       </header>
 
       <section className="add-button-section">
         <button onClick={() => openAddCategory()} className="add-button">
-          Add Category
+          + Add Category
         </button>
       </section>
 
