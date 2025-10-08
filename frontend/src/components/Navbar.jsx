@@ -1,7 +1,7 @@
 import React from "react";
 import companyLogo from "../../public/images/Vista-International-rm-background.png";
 import { FaHome, FaUser, FaCog, FaBars } from "react-icons/fa";
-import { MdCategory, MdInventory } from "react-icons/md";
+import { MdCategory, MdInventory, MdPointOfSale } from "react-icons/md";
 import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -48,6 +48,14 @@ const Navbar = () => {
                   <FaFileInvoice className="side-item-logo" />
                 </span>
                 <span>Invoice</span>
+              </li>
+            </div>
+            <div className="side-item-li">
+              <li onClick={() => navigate("/transactions")}>
+                <span className="label-logo">
+                  <MdPointOfSale className="side-item-logo" />
+                </span>
+                <span>Transactions</span>
               </li>
             </div>
           </ul>
