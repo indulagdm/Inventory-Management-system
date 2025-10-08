@@ -5,6 +5,10 @@
   text-align: center; */
 }
 
+body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
 .logo {
   /* height: 6em;
   padding: 1.5em;
@@ -40,7 +44,6 @@
 .read-the-docs {
   color: #888;
 }
-
 
 .child-window-content {
   padding: 0;
@@ -82,3 +85,19 @@
     z-index: 9999;
   }
 } */
+
+
+/* App.css */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+}

@@ -3,6 +3,7 @@ import { getItems } from "../apis/api.js";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
 import Loading from "../components/Loading.jsx";
+import { MdOutlineUpdate } from "react-icons/md";
 
 const Item = () => {
   const [items, setItems] = useState([]);
@@ -22,8 +23,8 @@ const Item = () => {
         const response = await getItems();
         if (response?.success) {
           setItems(response.data);
-        }else{
-          toast.error(response.error.message)
+        } else {
+          toast.error(response.error.message);
         }
       } catch (error) {
         toast.error(error.message);
@@ -57,9 +58,13 @@ const Item = () => {
     window.electronAPI.send("open-update-delete-item", itemID);
   };
 
+  const openUpdateStock = (itemID) => {
+    window.electronAPI.send("open-update-stock", itemID);
+  };
+
   if (isLoading) return <Loading />;
   return (
-    <div className="item-page-container">
+    <div className="overview-container">
       <header>
         <h1 className="header-h1-other">Items</h1>
       </header>
@@ -70,10 +75,10 @@ const Item = () => {
         </button>
       </section>
 
-      <div className="container-item">
+      <div className="container-items-inventory">
         {Array.isArray(items) &&
         items.filter((item) => item?.status === "show").length > 0 ? (
-          <table className="table-item">
+          <table className="table-items-inventory">
             <thead>
               <tr>
                 <th>Item Code</th>
@@ -83,38 +88,39 @@ const Item = () => {
                 <th>Selling Price</th>
                 <th>Discount</th>
                 <th>No of Items</th>
+                
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
                 <tr
                   key={item?._doc?._id || item?._id}
-                  onClick={() => openUpdateDeleteItem(item?._id)}
                 >
-                  <td>{item?._doc?.itemCode || item?.itemCode}</td>
-                  <td>{item?._doc?.itemName || item?.itemName}</td>
-                  <td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>{item?._doc?.itemCode || item?.itemCode}</td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>{item?._doc?.itemName || item?.itemName}</td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {item?._doc?.categoryID.categoryName ||
                       item?.categoryID?.categoryName}
                   </td>
-                  <td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
                   </td>
-                  <td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {formatNumber(
                       item?._doc?.sellingPrice || item?.sellingPrice
                     )}
                   </td>
-                  <td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {formatNumber(item?._doc?.discount || item?.discount)}
                   </td>
-                  <td>{item?._doc?.stock || item?.stock}</td>
+                  <td onClick={() => openUpdateStock(item?._id)}>{item?._doc?.stock || item?.stock}</td>
+                  
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <p style={{ marginLeft: "5rem" }}>No Items</p>
+          <p>No Items</p>
         )}
       </div>
     </div>

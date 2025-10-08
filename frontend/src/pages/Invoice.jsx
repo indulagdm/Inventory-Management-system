@@ -47,66 +47,69 @@ const Invoice = () => {
     });
   };
 
+  const formatDate = (date) => {
+    if (!date) return "";
+    return new Date(date).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   if (isLoading) return <Loading />;
 
   return (
-    <div className="item-page-container">
-      <header>
-        <h1 className="header-h1-other">Invoice</h1>
-      </header>
+    <div>
+      <div className="overview-container">
+        <header>
+          <h1 className="header-h1-other">Invoice</h1>
+        </header>
 
-      <section className="add-button-section">
-        <button onClick={() => openAddInvoice()} className="add-button">
-          + Add Invoice
-        </button>
-      </section>
+        <section className="add-button-section">
+          <button onClick={() => openAddInvoice()} className="add-button">
+            + Add Invoice
+          </button>
+        </section>
 
-      <div className="container-item">
-        {Array.isArray(invoice) && invoice.length > 0 ? (
-          <table className="table-item">
-            <thead>
-              <tr>
-                <th>Invoice No</th>
-                <th>Customer Name</th>
-                <th>Customer Address</th>
-                <th>Customer Phone</th>
-                <th>Total</th>
-                <th>Response</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoice.map((invoice) => (
-                <tr
-                  key={invoice?._doc?._id || invoice?._id}
-                  onDoubleClick={() => openUpdateDeleteInvoice(invoice?._id)}
-                >
-                  <td>{invoice?._doc?.invoiceNo || invoice?.invoiceNo}</td>
-                  <td>
-                    {invoice?._doc?.customerName || invoice?.customerName}
-                  </td>
-                  <td>
-                    {invoice?._doc?.customerAddress || invoice?.customerAddress}
-                  </td>
-                  <td>
-                    {invoice?._doc?.customerPhone || invoice?.customerPhone}
-                  </td>
-                  <td>
-                    {formatNumber(invoice?._doc?.total || invoice?.total)}
-                  </td>
-                  <td
-                    onClick={() =>
-                      navigate(`/print/${invoice?._doc?._id || invoice?._id}`)
-                    }
-                  >
-                    <MdPrint />
-                  </td>
+        <div className="container-items-inventory">
+          {Array.isArray(invoice) && invoice.length > 0 ? (
+            <table className="table-items-inventory">
+              <thead>
+                <tr>
+                  <th>Invoice No</th>
+                  <th>Customer Name</th>
+                  <th>Customer Address</th>
+                  <th>Customer Phone</th>
+                  <th>Total</th>
+                  <th>Sale date</th>
+                  <th>Response</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p style={{ marginLeft: "5rem" }}>No Invoices</p>
-        )}
+              </thead>
+              <tbody>
+                {invoice.map((invoice) => (
+                  <tr
+                    key={invoice?._id}
+                    onDoubleClick={() => openUpdateDeleteInvoice(invoice?._id)}
+                  >
+                    <td>{invoice?.invoiceNo}</td>
+                    <td>{invoice?.customerName}</td>
+                    <td>{invoice?.customerAddress}</td>
+                    <td>{invoice?.customerPhone}</td>
+                    <td>{formatNumber(invoice?.total)}</td>
+                    <td>{formatDate(invoice?.createdAt)}</td>
+                    <td onClick={() => navigate(`/print/${invoice?._id}`)}>
+                      <MdPrint />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No Invoices</p>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,43 @@
-.container {
-  margin-left: 15vw;
+.overview-container {
+  justify-content: center;
+  overflow-x: clip;
+}
+
+.header-h1-other {
+  margin-left: -12rem;
+}
+
+.container-items-with-summary {
+  margin-left: 10rem;
   display: flex;
-  flex: 1;
+}
+
+.total-items {
+  border-radius: 1rem;
+  border: 1px solid black;
+  align-items: center;
+  width: 8rem;
+  height: 6rem;
+  justify-items: center;
+  margin-right: 1rem;
+  align-items: center;
+}
+
+.total-item-header {
+  font-size: 14px;
+  font-family: 50;
+}
+
+.total-items p {
+  font-size: 20px;
+  font-weight: 350;
+}
+.container {
+  margin-left: 5rem;
+  display: flex;
   flex-direction: column;
   height: 100vh;
+  width: calc(100% - 5rem);
 }
 
 table td,
@@ -46,19 +80,11 @@ table th {
   cursor: pointer;
 }
 
-header {
-  min-height: 2rem;
-}
-
-.header-h1-other{
-  margin-left: -5rem;
-}
-
 .add-button-section {
   min-height: 2rem;
 }
 
-/* .add-button {
+.add-button {
   padding: 3%;
   width: 10rem;
   background-color: rgb(40, 138, 40);
@@ -71,7 +97,7 @@ header {
   background-color: rgb(29, 101, 29);
   cursor: pointer;
   border: 0.5px solid black;
-} */
+}
 
 .footer-part {
   margin-top: 28vw;
@@ -109,6 +135,12 @@ header {
   }
 }
 
+.container-items-inventory {
+  justify-self: center;
+  margin-left: 5rem;
+  min-height: 50px;
+}
+
 .container-item {
   justify-self: center;
 }
@@ -144,11 +176,10 @@ header {
 }
 
 header {
-  .header-h1 {
-    display: flex;
-    flex-direction: column;
-    margin-left: 0rem;
-  }
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
 
   .header-h2 {
     display: flex;
@@ -184,34 +215,30 @@ header {
   }
 }
 
-.container-items-inventory {
-  justify-self: center;
-}
-
 .table-items-inventory {
   border-collapse: collapse;
   margin-left: 5rem;
+}
 
-  thead {
-    font-size: 15px;
-  }
+.table-items-inventory thead {
+  font-size: 15px;
+}
 
-  th,
-  td {
-    width: 250px;
-  }
+.table-items-inventory th,
+.table-items-inventory td {
+  width: 250px;
+}
 
-  th {
-    background-color: #bdbdbd;
-  }
+.table-items-inventory th {
+  background-color: #bdbdbd;
+}
 
-  th:hover {
-    cursor: not-allowed;
-  }
+.table-items-inventory th:hover {
+  cursor: not-allowed;
+}
 
-  td:hover {
-    cursor: pointer;
-  }
+.table-items-inventory td:hover {
+  cursor: pointer;
 }
 
 .table-invoice-item {
@@ -249,17 +276,13 @@ thead {
   min-height: 20vh;
 }
 
-.header-category-h1 {
-  margin-left: -5.5rem;
-}
-
-/* .button-container-ia {
+.button-container-ia {
   button {
     width: 20rem;
     padding: 10px;
     margin: 20px;
   }
-} */
+}
 
 .item-update-button-ia {
   background-color: #1e1e2f;
@@ -304,29 +327,27 @@ thead {
   cursor: pointer;
 }
 
-
-
-.container-items-with-summary {
+/* .container-items-with-summary {
   display: flex;
   justify-content: space-between;
-  gap: 20px; 
+  gap: 20px;
   padding: 10px;
   max-width: 100%;
   margin-left: 5rem;
-  overflow-x: auto; 
-}
+  overflow-x: auto;
+} */
 
 .total-items {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 10px;
-  width: 17rem;
+  width: 14rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100px; 
+  height: 100px;
 }
 
 .total-item-header {
@@ -344,18 +365,17 @@ thead {
 }
 
 .total-items:last-child {
-  border: 2px solid #ffcccc; 
-  background-color: #fff5f5; 
+  border: 2px solid #ffcccc;
+  background-color: #fff5f5;
 }
 
 .total-items:last-child .total-item-header {
-  color: #e74c3c; 
+  color: #e74c3c;
 }
 
 .total-items:last-child p {
-  color: #e74c3c; 
+  color: #e74c3c;
 }
-
 
 @media (max-width: 768px) {
   .container-items-with-summary {
@@ -364,31 +384,13 @@ thead {
   }
 
   .total-items {
-    width: 50%; 
+    width: 50%;
     max-width: 150px;
     margin-bottom: 20px;
   }
 
   .total-items:last-child {
-    margin-bottom: 0; 
-  }
-} 
-
-
-.overview-container{
-  header {
-    h1{
-      text-align: left;
-      margin-left: -12rem;
-    }
-  }
-}
-
-.item-page-container{
-  header{
-    h1{
-      margin-left: -11rem;
-    }
+    margin-bottom: 0;
   }
 }
 

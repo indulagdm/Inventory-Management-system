@@ -56,7 +56,7 @@ const Category = () => {
 
   if (isLoading) return <Loading />;
   return (
-    <div>
+    <div className="overview-container">
       <header>
         <h1 className="header-h1-other">Category</h1>
       </header>
@@ -67,9 +67,9 @@ const Category = () => {
         </button>
       </section>
 
-      <div className="container-category">
+      <div className="container-items-inventory">
         {Array.isArray(items) && items.length > 0 ? (
-          <table className="table-category">
+          <table className="table-items-inventory">
             <thead>
               <tr>
                 <th>Category Name</th>
@@ -94,7 +94,7 @@ const Category = () => {
             </tbody>
           </table>
         ) : (
-          <p style={{ marginLeft: "5rem" }}>No Categories</p>
+          <p>No Categories</p>
         )}
       </div>
 

@@ -13,6 +13,7 @@ import UpdateStock from "./pages/UpdateStock";
 import Invoice from "./pages/Invoice";
 import InvoiceAdd from "./pages/InvoiceAdd";
 import PrintInvoice from "./pages/PrintInvoice";
+import Transaction from "./pages/Transaction";
 import InvoiceUpdateDelete from "./pages/InvoiceUpdateDelete";
 import TitleBar from "./components/TitleBar";
 
@@ -59,6 +60,7 @@ function App() {
             <Route path="/items" element={<Item />} />
             <Route path="/categories" element={<Category />} />
             <Route path="/invoices" element={<Invoice />} />
+            <Route path="/transactions" element={<Transaction />} />
 
             <Route path="/print/:invoiceID" element={<PrintInvoice />} />
           </Routes>

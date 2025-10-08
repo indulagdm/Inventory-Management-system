@@ -1,0 +1,27 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+  width: 250px; /* Fixed width for sidebar */
+  position: fixed; /* Keeps sidebar fixed on scroll */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height */
+  background-color: #f0f0f0; /* Optional: background color */
+  z-index: 1000; /* Ensure sidebar is above content */
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1; /* Takes remaining space */
+  padding: 20px;
+  background-color: #ffffff; /* Optional: background color */
+  box-sizing: border-box;
+}
+
+.main-content.with-sidebar {
+  margin-left: 250px; /* Offset for fixed sidebar */
+  
+}

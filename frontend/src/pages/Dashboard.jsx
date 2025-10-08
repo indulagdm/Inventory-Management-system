@@ -1,5 +1,5 @@
 import React from "react";
-import { getItems, getRecentTransaction } from "../apis/api.js";
+import { getItems, getRecentTransaction, getCategories } from "../apis/api.js";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import ItemAdd from "./ItemAdd.jsx";
@@ -13,11 +13,23 @@ const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [recentTransactions, setRecentTransactions] = useState([]);
+  const [category, setCategory] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
+    });
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    return new Date(date).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -53,8 +65,24 @@ const Dashboard = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getCategories();
+        if (response.success) {
+          setCategory(response.data);
+        }else{
+          toast.error(response.error.message)
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchData();
     fetchRecentTransactions();
+    fetchCategories();
   }, []);
 
   // const openAddItem = () => {
@@ -105,6 +133,13 @@ const Dashboard = () => {
           </section>
 
           <section className="total-items">
+            <h2 className="total-item-header">Total categories</h2>
+            <p>
+              {category?.length}
+            </p>
+          </section>
+
+          <section className="total-items">
             <h2 className="total-item-header">Low Stock</h2>
             <p>
               {items.filter((item) => item?.stockStatus === "low-stock").length}
@@ -132,6 +167,7 @@ const Dashboard = () => {
                   <th>Discount</th>
                   <th>No of Items</th>
                   <th>Type</th>
+                  <th>Purchase/Sale date</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,6 +187,7 @@ const Dashboard = () => {
                     <td>{formatNumber(item?.itemID?.discount)}</td>
                     <td>{item?.stock}</td>
                     <td>{item?.status}</td>
+                    <td>{formatDate(item?.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
