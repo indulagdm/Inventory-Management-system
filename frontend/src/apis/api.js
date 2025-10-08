@@ -153,3 +153,21 @@ export const getNumberOfOutOfStock = async () => {
     throw new Error(error.message);
   }
 };
+
+export const getRecentTransaction = async () => {
+  try {
+    const response = await window.electronAPI.recentTransaction();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getRecentTransactionAll = async () => {
+  try {
+    const response = await window.electronAPI.recentTransactionAll();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
