@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { getItems, addInvoice } from "../apis/api.js";
+import { itemGets, invoiceCreate } from "../apis/api.js";
 import "./Dashboard.css";
 
 const InvoiceAdd = () => {
@@ -13,7 +12,7 @@ const InvoiceAdd = () => {
   });
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,7 +73,7 @@ const InvoiceAdd = () => {
     setIsLoading(true);
     try {
       // Replace with your actual API call
-      const response = await addInvoice(cleanedFormData);
+      const response = await invoiceCreate(cleanedFormData);
       if (response?.success) {
         toast.success("Invoice added successfully");
         localStorage.removeItem("invoiceData");
@@ -94,7 +93,7 @@ const InvoiceAdd = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await getItems();
+        const response = await itemGets();
         console.log("getItems response:", response); // Debug
         setItems(Array.isArray(response?.data) ? response.data : []);
         if (!Array.isArray(response?.data)) {

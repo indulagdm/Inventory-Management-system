@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { getItems } from "../apis/api.js";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
 import Loading from "../components/Loading.jsx";
-import { MdOutlineUpdate } from "react-icons/md";
+import { itemGets } from "../apis/api.js";
+import { useModal } from "../components/GlobalModal.jsx";
+import ItemAdd from "./ItemAdd.jsx";
+import ItemUpdateDelete from "./ItemUpdateDelete.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Item = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { openModal, confirmDelete } = useModal();
+
+  const navigate = useNavigate();
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -20,7 +26,8 @@ const Item = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await getItems();
+        const response = await itemGets();
+        console.log("response of items", response);
         if (response?.success) {
           setItems(response.data);
         } else {
@@ -36,30 +43,16 @@ const Item = () => {
     fetchData();
   }, []);
 
-  // const items = [
-  //   {
-  //     _id:"1",
-  //     itemCode:"1255",
-  //     itemName:"Solar panel",
-  //   },
-  //   {
-  //     _id:"2",
-  //     itemCode:"1256",
-  //     itemName:"Solar Light"
-  //   }
-
-  // ]
-
   const openAddItem = () => {
-    window.electronAPI.send("open-add-item");
+    window.electronAPI?.openPopup(`/item-add`);
   };
 
   const openUpdateDeleteItem = (itemID) => {
-    window.electronAPI.send("open-update-delete-item", itemID);
+    window.electronAPI?.openPopup(`/item-update-delete/${itemID}`);
   };
 
   const openUpdateStock = (itemID) => {
-    window.electronAPI.send("open-update-stock", itemID);
+    window.electronAPI?.openPopup(`/item-update-stock/${itemID}`);
   };
 
   if (isLoading) return <Loading />;
@@ -88,19 +81,20 @@ const Item = () => {
                 <th>Selling Price</th>
                 <th>Discount</th>
                 <th>No of Items</th>
-                
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr
-                  key={item?._doc?._id || item?._id}
-                >
-                  <td onClick={() => openUpdateDeleteItem(item?._id)}>{item?._doc?.itemCode || item?.itemCode}</td>
-                  <td onClick={() => openUpdateDeleteItem(item?._id)}>{item?._doc?.itemName || item?.itemName}</td>
+                <tr key={item?._doc?._id || item?._id}>
                   <td onClick={() => openUpdateDeleteItem(item?._id)}>
-                    {item?._doc?.categoryID.categoryName ||
-                      item?.categoryID?.categoryName}
+                    {item?._doc?.itemCode || item?.itemCode}
+                  </td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
+                    {item?._doc?.itemName || item?.itemName}
+                  </td>
+                  <td onClick={() => openUpdateDeleteItem(item?._id)}>
+                    {item?._doc?.categoryDetails[0].categoryName ||
+                      item?.categoryDetails[0]?.categoryName}
                   </td>
                   <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {formatNumber(item?._doc?.unitPrice || item?.unitPrice)}
@@ -113,8 +107,9 @@ const Item = () => {
                   <td onClick={() => openUpdateDeleteItem(item?._id)}>
                     {formatNumber(item?._doc?.discount || item?.discount)}
                   </td>
-                  <td onClick={() => openUpdateStock(item?._id)}>{item?._doc?.stock || item?.stock}</td>
-                  
+                  <td onClick={() => openUpdateStock(item?._id)}>
+                    {item?._doc?.stock || item?.stock}
+                  </td>
                 </tr>
               ))}
             </tbody>

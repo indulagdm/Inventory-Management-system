@@ -1,5 +1,10 @@
 import React from "react";
-import { getItems, getRecentTransaction, getCategories } from "../apis/api.js";
+import {
+  itemGets,
+  getRecentTransaction,
+  categoryGets,
+  itemByCategory,
+} from "../apis/api.js";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import ItemAdd from "./ItemAdd.jsx";
@@ -14,6 +19,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [category, setCategory] = useState([]);
+  const [itemsCategory, setItemCategory] = useState([]);
 
   const formatNumber = (value) => {
     return Number(value || 0).toLocaleString("en-US", {
@@ -37,7 +43,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await getItems();
+        const response = await itemGets();
         if (response?.success) {
           setItems(response.data);
         } else {
@@ -52,7 +58,9 @@ const Dashboard = () => {
 
     const fetchRecentTransactions = async () => {
       try {
+        setIsLoading(true);
         const response = await getRecentTransaction();
+        console.log(response);
         if (response?.success) {
           setRecentTransactions(response.data);
         } else {
@@ -68,11 +76,11 @@ const Dashboard = () => {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        const response = await getCategories();
+        const response = await categoryGets();
         if (response.success) {
           setCategory(response.data);
-        }else{
-          toast.error(response.error.message)
+        } else {
+          toast.error(response.error.message);
         }
       } catch (error) {
         toast.error(error.message);
@@ -80,9 +88,27 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
+
+    const fetchCategoriesByItems = async () => {
+      try {
+        setIsLoading(true);
+        const response = await itemByCategory();
+        if (response.success) {
+          setItemCategory(response.data);
+        } else {
+          toast.error(response.error.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchData();
     fetchRecentTransactions();
     fetchCategories();
+    fetchCategoriesByItems();
   }, []);
 
   // const openAddItem = () => {
@@ -134,9 +160,7 @@ const Dashboard = () => {
 
           <section className="total-items">
             <h2 className="total-item-header">Total categories</h2>
-            <p>
-              {category?.length}
-            </p>
+            <p>{category?.length}</p>
           </section>
 
           <section className="total-items">

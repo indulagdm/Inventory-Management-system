@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { createItem, getCategories } from "../apis/api.js";
+import { itemCreate, categoryGets } from "../apis/api.js";
 import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
 import "./PopUpStyles.css";
@@ -38,7 +38,7 @@ const ItemAdd = () => {
 
     setIsLoading(true);
     try {
-      const response = await createItem({
+      const response = await itemCreate({
         ...formData,
         categoryID: formData.categoryID || undefined,
         unitPrice: formData.unitPrice ? parseFloat(formData.unitPrice) : 0,
@@ -52,6 +52,7 @@ const ItemAdd = () => {
       if (response?.success) {
         toast.success("Item added successfully");
         navigate("/items");
+        window.close();
       } else {
         toast.error(response?.error?.message || "Failed to add item");
       }
@@ -61,13 +62,13 @@ const ItemAdd = () => {
       setIsLoading(false);
     }
 
-    window.close();
+    
   };
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getCategories();
+        const response = await categoryGets();
         if (response?.data) {
           setCategories(Array.isArray(response.data) ? response.data : []);
         } else {

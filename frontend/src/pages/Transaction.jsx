@@ -30,6 +30,7 @@ const Transaction = () => {
       try {
         setIsLoading(true);
         const response = await getRecentTransactionAll();
+        console.log(response);
         if (response.success) {
           setItems(response.data);
         } else {
@@ -76,18 +77,18 @@ const Transaction = () => {
                     key={item?._id}
                     // onClick={() => openUpdateStock(item?._id)}
                     className={
-                      item?.status === "purchase" ? "text-green" : "text-red"
+                      item?.status === "PURCHASE" ? "text-green" : "text-red"
                     }
                   >
-                    <td>{item?.itemID?.itemCode}</td>
-                    <td>{item?.itemID?.itemName}</td>
-                    <td>{item?.itemID?.categoryID?.categoryName}</td>
-                    <td>{formatNumber(item?.itemID?.unitPrice)}</td>
-                    <td>{formatNumber(item?.itemID?.sellingPrice)}</td>
-                    <td>{formatNumber(item?.itemID?.discount)}</td>
-                    <td>{item?.stock}</td>
-                    <td>{item?.status}</td>
-                    <td>{formatDate(item?.createdAt)}</td>
+                    <td>{item?.old_data?.itemCode}</td>
+                    <td>{item?.old_data?.itemName}</td>
+                    <td>{item?.old_data?.categoryID?.categoryName}</td>
+                    <td>{formatNumber(item?.old_data?.unitPrice)}</td>
+                    <td>{formatNumber(item?.old_data?.sellingPrice)}</td>
+                    <td>{formatNumber(item?.old_data?.discount)}</td>
+                    <td>{item?.old_data?.stock}</td>
+                    <td>{item?.old_data?.status}</td>
+                    <td>{formatDate(item?.old_data?.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>

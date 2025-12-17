@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { createCategory } from "../apis/api.js";
+import { categoryCreate } from "../apis/api.js";
 import "./PopUpStyles.css";
 import { useNavigate } from "react-router-dom";
+import PopupWrapper from "../components/PopupWrapper.jsx";
 
 const CategoryAdd = () => {
   const [formData, setFormData] = useState({ categoryName: "" });
@@ -17,7 +18,7 @@ const CategoryAdd = () => {
 
     setIsLoading(true);
     try {
-      const response = await createCategory({
+      const response = await categoryCreate({
         ...formData,
         categoryName: formData.categoryName || undefined,
       });
@@ -25,6 +26,7 @@ const CategoryAdd = () => {
       if (response?.success) {
         toast.success("Category added successfully");
         navigate("/category");
+        window.close();
       } else {
         toast.error(response?.error?.message || "Failed to add category");
       }
@@ -33,8 +35,7 @@ const CategoryAdd = () => {
     } finally {
       setIsLoading(false);
     }
-
-    window.close();
+    
   };
 
   const handleChange = async (e) => {
@@ -47,41 +48,46 @@ const CategoryAdd = () => {
 
   return (
     <div>
-      <header>
-        <h2 className="header-h2">Add New Category</h2>
-      </header>
+      <PopupWrapper>
+        <header>
+          <h2 className="header-h2">Add New Category</h2>
+        </header>
 
-      <form onSubmit={handleSubmit}>
-        <div className="item-container">
-          <div className="input-container">
-            {/* <label className="">
+        <form onSubmit={handleSubmit}>
+          <div className="item-container">
+            <div className="input-container">
+              {/* <label className="">
             Category Name
           </label> */}
-            <input
-              type="text"
-              name="categoryName"
-              value={formData.categoryName}
-              onChange={handleChange}
-              className="item-input"
-              placeholder=" "
-              step="0.01"
-              disabled={isLoading}
-            />
-            <span className="placeholder">Category Name</span>
-          </div>
+              <input
+                type="text"
+                name="categoryName"
+                value={formData.categoryName}
+                onChange={handleChange}
+                className="item-input"
+                placeholder=" "
+                step="0.01"
+                disabled={isLoading}
+              />
+              <span className="placeholder">Category Name</span>
+            </div>
 
-          <section>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="add-button-item"
-              disabled={isLoading}
-            >
-              {isLoading ? "Submitting..." : "Submit"}
-            </button>
-          </section>
-        </div>
-      </form>
+            <section>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="add-button-item"
+                disabled={isLoading}
+              >
+                {isLoading ? "Submitting..." : "Submit"}
+              </button>
+              <button type="button" onClick={window.close}>
+                Cancel
+              </button>
+            </section>
+          </div>
+        </form>
+      </PopupWrapper>
     </div>
   );
 };

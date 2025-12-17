@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { getCategories, deleteCategory } from "../apis/api.js";
+import { categoryGets, categoryDelete } from "../apis/api.js";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
 import "./Dashboard.css";
 import { MdDelete } from "react-icons/md";
+import { usePopup } from "../hooks/usePopup.js";
 
 const Category = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  //const { openPopup } = usePopup();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await getCategories();
+        const response = await categoryGets();
         if (response.success) {
           setItems(response.data);
-        }else{
-          toast.error(response.error.message)
+        } else {
+          toast.error(response.error.message);
         }
       } catch (error) {
         toast.error(error.message);
@@ -29,15 +32,19 @@ const Category = () => {
     fetchData();
   }, []);
 
+  const handleOpenPopup = () => {
+    window.electronAPI?.openPopup("/category-add", { width: 600, height: 400 });
+  };
+
   const handleDelete = async (categoryID) => {
-    const categoryDelete = window.confirm(
+    const deleteCategory = window.confirm(
       "Are you sure to delete this category?"
     );
 
-    if (!categoryDelete) return;
+    if (!deleteCategory) return;
 
     try {
-      const response = await deleteCategory(categoryID);
+      const response = await categoryDelete(categoryID);
 
       if (response?.success) {
         toast.success(response.message);
@@ -50,9 +57,19 @@ const Category = () => {
     }
   };
 
-  const openAddCategory = () => {
-    window.electronAPI.send("open-add-category");
-  };
+  // const openAddCategory = () => {
+  //   // window.electronAPI.send("open-add-category");
+  //   openPopup("/category-add", { width: 500, height: 700, model: false });
+  // };
+
+  // const handleAddItem = () => {
+  //   window.electronAPI.openChildWindow(
+  //     "/category-add",
+  //     450,
+  //     500,
+  //     "add-category"
+  //   );
+  // };
 
   if (isLoading) return <Loading />;
   return (
@@ -62,7 +79,7 @@ const Category = () => {
       </header>
 
       <section className="add-button-section">
-        <button onClick={() => openAddCategory()} className="add-button">
+        <button className="add-button" onClick={handleOpenPopup}>
           + Add Category
         </button>
       </section>
@@ -86,7 +103,7 @@ const Category = () => {
                   <td className="">
                     {item?._doc?.categoryName || item?.categoryName}
                   </td>
-                  <td onClick={() => handleDelete(item?._id)}>
+                  <td onClick={()=>handleDelete(item?._id)}>
                     <MdDelete />
                   </td>
                 </tr>

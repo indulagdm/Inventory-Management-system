@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { updateStock } from "../apis/api.js";
+import { stockUpdate } from "../apis/api.js";
 import "./PopUpStyles.css";
 
 const UpdateStock = () => {
@@ -44,7 +44,7 @@ const UpdateStock = () => {
         stock: formData.stock ? parseInt(formData.stock) : 0,
       };
 
-      const response = await updateStock(itemID, updatedData);
+      const response = await stockUpdate(itemID, updatedData);
 
       if (response?.success) {
         toast.success("Stock updated successfully");

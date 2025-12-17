@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
-  updateItem,
-  deleteItem,
-  getCategories,
-  getItemByID,
+  itemUpdate,
+  itemDelete,
+  categoryGets,
+  itemGetByID,
 } from "../apis/api.js";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PopUpStyles.css";
+import Loading from "../components/Loading.jsx";
 
 const ItemUpdateDelete = () => {
   const [formData, setFormData] = useState({
@@ -27,11 +28,8 @@ const ItemUpdateDelete = () => {
   const navigate = useNavigate();
   const { itemID } = useParams();
 
-  console.log("Received itemID:", itemID, typeof itemID);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Changing ${name} to:`, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -82,7 +80,7 @@ const ItemUpdateDelete = () => {
         categoryID: formData.categoryID || undefined,
       };
 
-      const response = await updateItem(itemID, updatedData);
+      const response = await itemUpdate(itemID, updatedData);
 
       if (response?.success) {
         toast.success("Item updated successfully");
@@ -107,7 +105,7 @@ const ItemUpdateDelete = () => {
     if (!confirmDelete) return;
     setIsLoading(true);
     try {
-      const response = await deleteItem(itemID);
+      const response = await itemDelete(itemID);
       if (response?.success) {
         toast.success("Item deleted successfully");
         navigate("/");
@@ -126,7 +124,7 @@ const ItemUpdateDelete = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const categoriesResponse = await getCategories();
+        const categoriesResponse = await categoryGets();
         if (
           categoriesResponse?.success &&
           Array.isArray(categoriesResponse.data)
@@ -140,36 +138,14 @@ const ItemUpdateDelete = () => {
         }
 
         if (itemID) {
-          const itemResponse = await getItemByID(itemID);
+          const itemResponse = await itemGetByID(itemID);
           if (itemResponse?.success) {
             const item = itemResponse.data;
-            console.log("Fetched item full response:", itemResponse);
-            console.log(
-              "Fetched item.categoryID:",
-              item.categoryID,
-              typeof item.categoryID
-            );
-            let categoryIdValue = "";
-            if (
-              item.categoryID &&
-              typeof item.categoryID === "object" &&
-              item.categoryID._id
-            ) {
-              categoryIdValue = item.categoryID._id;
-              console.log("Extracted _id:", categoryIdValue);
-            } else if (typeof item.categoryID === "string") {
-              categoryIdValue = item.categoryID;
-              console.log("Used string categoryID:", categoryIdValue);
-            } else {
-              console.log(
-                "categoryID is invalid or undefined:",
-                item.categoryID
-              );
-            }
+
             setFormData({
               itemCode: item.itemCode || "",
               itemName: item.itemName || "",
-              categoryID: categoryIdValue,
+              categoryID: item.categoryID || "",
               description: item.description || "",
               unitPrice: item.unitPrice || "",
               sellingPrice: item.sellingPrice || "",
@@ -190,185 +166,9 @@ const ItemUpdateDelete = () => {
     fetchData();
   }, [itemID]);
 
-  useEffect(() => {
-    console.log(
-      "FormData categoryID:",
-      formData.categoryID,
-      typeof formData.categoryID
-    );
-  }, [formData]);
+  if (isLoading) return <Loading />;
 
   return (
-    // <div className="max-w-lg mx-auto p-4 sm:p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-    //   <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-gray-800">
-    //     Item Details
-    //   </h2>
-    //   <form onSubmit={handleSubmit} className="space-y-4">
-    //     {/* Input fields remain the same */}
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Item Code
-    //       </label>
-    //       <input
-    //         type="text"
-    //         name="itemCode"
-    //         value={formData.itemCode}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter item code"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Item Name
-    //       </label>
-    //       <input
-    //         type="text"
-    //         name="itemName"
-    //         value={formData.itemName}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter item name"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Category
-    //       </label>
-    //       <select
-    //         name="categoryID"
-    //         value={formData.categoryID}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         disabled={isLoading}
-    //       >
-    //         <option value="">Select a category</option>
-    //         {Array.isArray(categories) && categories.length ? (
-    //           [...categories]
-    //             .sort((a, b) => a.categoryName.localeCompare(b.categoryName))
-    //             .map((category) => (
-    //               <option key={category._id} value={category._id}>
-    //                 {category.categoryName}
-    //               </option>
-    //             ))
-    //         ) : (
-    //           <option value="" disabled>
-    //             No categories available
-    //           </option>
-    //         )}
-    //       </select>
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Description
-    //       </label>
-    //       <input
-    //         type="text"
-    //         name="description"
-    //         value={formData.description}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter description"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Unit Price
-    //       </label>
-    //       <input
-    //         type="number"
-    //         name="unitPrice"
-    //         value={formData.unitPrice}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter unit price"
-    //         step="0.01"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Selling Price
-    //       </label>
-    //       <input
-    //         type="number"
-    //         name="sellingPrice"
-    //         value={formData.sellingPrice}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter selling price"
-    //         step="0.01"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Discount
-    //       </label>
-    //       <input
-    //         type="number"
-    //         name="discount"
-    //         value={formData.discount}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter discount"
-    //         step="0.01"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     <div>
-    //       <label className="block text-sm font-medium text-gray-700 mb-1">
-    //         Stock
-    //       </label>
-    //       <input
-    //         type="number"
-    //         name="stock"
-    //         value={formData.stock}
-    //         onChange={handleChange}
-    //         className="w-full p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm disabled:opacity-50"
-    //         placeholder="Enter stock"
-    //         step="1"
-    //         disabled={isLoading}
-    //       />
-    //     </div>
-
-    //     {/* Other input fields remain the same */}
-
-    //     <div className="flex flex-col sm:flex-row gap-3">
-    //       <button
-    //         type="submit"
-    //         className={`flex-1 py-2.5 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm transition-colors duration-200 ${
-    //           isLoading ? "opacity-50 cursor-not-allowed" : ""
-    //         }`}
-    //         disabled={isLoading}
-    //       >
-    //         {isLoading ? "Updating..." : "Update"}
-    //       </button>
-
-    //       <button
-    //         type="button"
-    //         onClick={handleDelete}
-    //         className={`flex-1 py-2.5 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm transition-colors duration-200 ${
-    //           isLoading ? "opacity-50 cursor-not-allowed" : ""
-    //         }`}
-    //         disabled={isLoading}
-    //       >
-    //         {isLoading ? "Deleting..." : "Delete"}
-    //       </button>
-    //     </div>
-    //   </form>
-    // </div>
-
     <div>
       <header>
         <h2 className="header-h2">Update Item</h2>
@@ -513,6 +313,7 @@ const ItemUpdateDelete = () => {
               placeholder=" "
               step="0.01"
               disabled={isLoading}
+              readOnly
             />
             <span className="placeholder">Stock</span>
           </div>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getInvoices } from "../apis/api.js";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading.jsx";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { MdPrint } from "react-icons/md";
+import { invoiceGets } from "../apis/api.js";
+import { useModal } from "../components/GlobalModal.jsx";
+
 const Invoice = () => {
   const [invoice, setInvoice] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,18 +14,18 @@ const Invoice = () => {
   const navigate = useNavigate();
 
   const openAddInvoice = () => {
-    window.electronAPI.send("open-add-invoice");
+    window.electronAPI?.openPopup(`/invoice-add`);
   };
 
   const openUpdateDeleteInvoice = (invoiceID) => {
-    window.electronAPI.send("open-update-delete-invoice", invoiceID);
+    window.electronAPI?.openPopup(`/invoice-update-delete/${invoiceID}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await getInvoices();
+        const response = await invoiceGets();
         if (response?.success) {
           console.log(response);
           setInvoice(response.data);
