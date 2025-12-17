@@ -1,97 +1,109 @@
 //category
 
-export const createCategory = async (data) => {
+const API = window.electronAPI;
+
+export const categoryCreate = async (data) => {
   try {
-    const response = await window.electronAPI.addCategory(data);
+    const response = await API.addCategory(data);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const deleteCategory = async (categoryID) => {
+export const categoryDelete = async (categoryID) => {
   try {
-    const response = await window.electronAPI.removeCategory(categoryID);
-    return response;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-export const createItem = async (data) => {
-  try {
-    const response = await window.electronAPI.createItem(data);
+    const response = await API.removeCategory(categoryID);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const getItems = async () => {
+export const categoryGets = async () => {
   try {
-    const response = await window.electronAPI.getItems();
+    const response = await API.getCategories();
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const getCategories = async () => {
+export const itemCreate = async (data) => {
   try {
-    const response = await window.electronAPI.getCategories();
+    const response = await API.createItem(data);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const getItemByID = async (itemID) => {
+export const itemGets = async () => {
   try {
-    const response = await window.electronAPI.getItemByID(itemID);
+    const response = await API.getItems();
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const updateItem = async (itemID, data) => {
+export const itemGetByID = async (itemID) => {
   try {
-    const response = await window.electronAPI.updateItem(itemID, data);
+    const response = await API.getItemByID(itemID);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const deleteItem = async (itemID) => {
+export const itemUpdate = async (itemID, data) => {
   try {
-    const response = await window.electronAPI.deleteItem(itemID);
+    const response = await API.updateItem(itemID, data);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const updateStock = async (itemID, data) => {
+export const itemDelete = async (itemID) => {
   try {
-    const response = await window.electronAPI.updateStock(itemID, data);
+    const response = await API.deleteItem(itemID);
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const addInvoice = async (data) => {
+export const itemByCategory = async () => {
   try {
-    const response = await window.electronAPI.addInvoice(data);
+    const response = await API.categoryByItems();
     return response;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const getInvoices = async () => {
+export const stockUpdate = async (itemID, data) => {
   try {
-    const response = await window.electronAPI.getInvoices();
+    const response = await API.updateStock(itemID, data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const invoiceCreate = async (data) => {
+  try {
+    const response = await API.addInvoice(data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const invoiceGets = async () => {
+  try {
+    const response = await API.getInvoices();
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -100,7 +112,7 @@ export const getInvoices = async () => {
 
 export const invoicePrint = async (invoiceID) => {
   try {
-    const response = await window.electronAPI.printInvoice(invoiceID);
+    const response = await API.printInvoice(invoiceID);
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -109,7 +121,7 @@ export const invoicePrint = async (invoiceID) => {
 
 export const downloadReport = async (invoiceID, { htmlContent }) => {
   try {
-    const response = await window.electronAPI.downloadReport(invoiceID, {
+    const response = await API.downloadReport(invoiceID, {
       htmlContent,
     });
     return response;
@@ -118,9 +130,9 @@ export const downloadReport = async (invoiceID, { htmlContent }) => {
   }
 };
 
-export const getInvoiceByID = async (invoiceID) => {
+export const invoiceGetByID = async (invoiceID) => {
   try {
-    const response = await window.electronAPI.getInvoiceByID(invoiceID);
+    const response = await API.getInvoiceByID(invoiceID);
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -129,7 +141,7 @@ export const getInvoiceByID = async (invoiceID) => {
 
 export const getNumberOfStock = async () => {
   try {
-    const response = await window.electronAPI.noOfStock();
+    const response = await API.noOfStock();
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -138,7 +150,7 @@ export const getNumberOfStock = async () => {
 
 export const getNumberOfInStock = async () => {
   try {
-    const response = await window.electronAPI.noOfInStock();
+    const response = await API.noOfInStock();
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -147,7 +159,7 @@ export const getNumberOfInStock = async () => {
 
 export const getNumberOfOutOfStock = async () => {
   try {
-    const response = await window.electronAPI.noOfOutStock();
+    const response = await API.noOfOutStock();
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -156,7 +168,7 @@ export const getNumberOfOutOfStock = async () => {
 
 export const getRecentTransaction = async () => {
   try {
-    const response = await window.electronAPI.recentTransaction();
+    const response = await API.recentTransaction();
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -165,7 +177,26 @@ export const getRecentTransaction = async () => {
 
 export const getRecentTransactionAll = async () => {
   try {
-    const response = await window.electronAPI.recentTransactionAll();
+    const response = await API.recentTransactionAll();
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+//activation
+export const createActivation = async (data) => {
+  try {
+    const response = await productActivation(data);
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getActivation = async () => {
+  try {
+    const response = await getProduction();
     return response;
   } catch (error) {
     throw new Error(error.message);
