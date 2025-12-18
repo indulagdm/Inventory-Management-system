@@ -3,11 +3,11 @@ import { GOOGLE_MAIL } from "../utils/variable.js";
 
 const sendMail = async (data) => {
   try {
-    const { subject, body } = data;
+    const { to, subject, body } = data;
 
     const mailOptions = {
       from: `"Inventory Management System"<${GOOGLE_MAIL}>`,
-      to: `${GOOGLE_MAIL}`,
+      to: to,
       subject,
       body,
     };
@@ -26,7 +26,7 @@ const sendMail = async (data) => {
       error: {
         message: error.message,
       },
-    }; 
+    };
   }
 };
 

@@ -26,7 +26,7 @@ const syncCollection = async (LocalModel, CloudModel) => {
       console.log(`✔ Synced ${doc._id} from ${LocalModel.modelName}`);
       return { success: true };
     } catch (error) {
-      console.error(`❌ Failed to sync ${doc._id}:`, err.message);
+      console.error(`❌ Failed to sync ${doc._id}:`, error.message);
       return { success: false, error: { message: error.message } };
     }
   }
