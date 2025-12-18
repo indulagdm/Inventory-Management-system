@@ -4,6 +4,10 @@ import {
   LocalItemHistory,
   CloudItemHistory,
 } from "../models/item.history.model.js";
+import {
+  LocalInvoiceHistory,
+  CloudInvoiceHistory,
+} from "../models/invoice.history.model.js";
 import { generateID } from "../utils/generateID.js";
 import mongoose from "mongoose";
 
@@ -172,7 +176,7 @@ const getInvoices = async () => {
           from: "items",
           localField: "item.itemID",
           foreignField: "_id",
-          as: "item.itemDetails",
+          as: "itemDetails",
         },
       },
     ]);
@@ -182,36 +186,17 @@ const getInvoices = async () => {
     }
 
     const invoicesWithStringId = invoices.map((invoice) => ({
-      // ...invoice,
-      // _id: invoice._id.toString(), // invoice id as string
-      // item: invoice.item.map((it) => ({
-      //   ...it,
-      //   _id: it._id.toString(), // invoice item id as string
-      //   itemID: it.itemID.toString()
-      //     ? {
-      //         ...it.itemID,
-      //         _id: it.itemID._id.toString(), // product id as string
-      //       }
-      //     : null,
-      // })),
-
       ...invoice,
       _id: invoice._id.toString(),
 
       item: Array.isArray(invoice.item)
         ? invoice.item.map((it) => ({
             ...it,
-            _id: it._id?.toString(),
+            _id: it._id?.toString?.() || undefined,
 
-            itemID:
-              it.itemID && typeof it.itemID === "object"
-                ? {
-                    ...it.itemID,
-                    _id: it.itemID._id.toString(),
-                  }
-                : it.itemID?.toString() || null,
+            itemID: it.itemID ? it.itemID.toString() : null,
           }))
-        : [], // fallback
+        : [],
     }));
 
     return { success: true, data: invoicesWithStringId };
@@ -245,96 +230,34 @@ const getInvoiceById = async (invoiceID) => {
     ]);
 
     if (!invoices.length) {
-      throw new Error("No invice found.");
+      throw new Error("No invoice found.");
     }
 
     const invoice = invoices[0];
 
-    // const invoiceData = {
-    //   invoiceNo: existInvoice.invoiceNo,
-    //   customerName: existInvoice.customerName,
-    //   customerAddress: existInvoice.customerAddress,
-    //   customerPhone: existInvoice.customerPhone,
-    //   total: existInvoice.total,
-    //   createdAt: existInvoice.createdAt,
-    //   updatedAt: existInvoice.updatedAt,
-    //   item: Array.isArray(existInvoice.item)
-    //     ? existInvoice.item.map((invoice) => {
-    //         const invoiceObj = invoice.toObject();
-    //         return {
-    //           ...invoiceObj,
-    //           _id: invoice._id.toString(),
-    //           quantity: invoice.quantity,
-    //           discount: invoice.discount,
-    //           total_item: invoice.total_item,
-    //           itemID: invoice.itemID
-    //             ? {
-    //                 ...invoice.itemID.toObject(),
-    //                 _id: invoice.itemID._id.toString(),
-    //               }
-    //             : null,
-    //         };
-    //       })
-    //     : existInvoice.item
-    //     ? [
-    //         {
-    //           ...existInvoice.item.toObject(),
-    //           _id: existInvoice.item._id.toString(),
-    //           quantity: existInvoice.item.quantity || 0,
-    //           discount: existInvoice.item.discount || 0,
-    //           total_item: existInvoice.item.total_item || 0,
-    //           itemID: existInvoice.item.itemID
-    //             ? {
-    //                 ...existInvoice.item.itemID.toObject(),
-    //                 _id: existInvoice.item.itemID._id.toString(),
-    //               }
-    //             : null,
-    //         },
-    //       ]
-    //     : [],
-    // };
-
     const formattedInvoice = {
+      ...invoice,
       _id: invoice._id.toString(),
-      invoiceNo: invoice.invoiceNo,
-      customerName: invoice.customerName,
-      customerAddress: invoice.customerAddress,
-      customerPhone: invoice.customerPhone,
-      total: invoice.total,
-      createdAt: invoice.createdAt,
 
-      items: invoice.item.map((invItem) => {
-        const itemInfo = invoice.itemDetails.find(
-          (i) => i._id.toString() === invItem.itemID.toString()
-        );
+      item: Array.isArray(invoice.item)
+        ? invoice.item.map((it) => ({
+            ...it,
+            _id: it._id.toString(),
+            itemID: it.itemID.toString(),
+          }))
+        : [],
 
-        return {
-          itemID: invItem.itemID,
-          itemName: itemInfo?.itemName,
-          itemCode: itemInfo?.itemCode,
-          sellingPrice: itemInfo?.sellingPrice,
-          quantity: invItem.quantity,
-          discount: invItem.discount,
-          total_item: invItem.total_item,
-        };
-      }),
+      itemDetails: Array.isArray(invoice.itemDetails)
+        ? invoice.itemDetails.map((item) => ({
+            ...item,
+            _id: item._id.toString(),
+          }))
+        : [],
     };
-    console.log("invoice", formattedInvoice);
 
     return {
       success: true,
       data: formattedInvoice,
-      // data: {
-      // ...invoice,
-      // _id: invoice._id.toString(),
-      // itemDetails: Array.isArray(invoice.itemDetails)
-      //   ? invoice.itemDetails.map((item) => ({
-      //       ...item,
-      //       _id: item._id.toString(),
-      //     }))
-      //   : [],
-
-      // },
     };
   } catch (error) {
     return {
@@ -346,6 +269,136 @@ const getInvoiceById = async (invoiceID) => {
   }
 };
 
-const updateInvoice = async (invoiceID) => {};
+const updateInvoice = async (invoiceID, formData) => {
+  try {
+    const {
+      invoiceNo,
+      customerName,
+      customerAddress,
+      customerPhone,
+      items,
+      total,
+    } = formData;
 
-export { createInvoice, getInvoiceById, getInvoices };
+    if (!mongoose.Types.ObjectId.isValid(invoiceID)) {
+      throw new Error("Invalid invoice id.");
+    }
+
+    // Validate required fields
+    if (!customerName || !customerAddress || !customerPhone) {
+      throw new Error("Customer details are required.");
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      throw new Error("At least one item is required.");
+    }
+
+    // Validate each item
+    for (const item of items) {
+      if (!item.itemID || !mongoose.Types.ObjectId.isValid(item.itemID)) {
+        throw new Error("Invalid itemID in items list.");
+      }
+      if (!item.quantity || item.quantity < 1) {
+        throw new Error("Quantity must be at least 1.");
+      }
+    }
+
+    const existInvoice = await LocalInvoice.findOne({_id:invoiceID});
+
+    if(!existInvoice){
+      throw new Error("No invoice found.")
+    }
+
+    let 
+
+    const itemIDs = items.map((i) => new mongoose.Types.ObjectId(i.itemID));
+    const itemDocs = await LocalItem.find({ _id: { $in: itemIDs } });
+
+    const priceMap = {};
+    itemDocs.forEach((doc) => {
+      priceMap[doc._id.toString()] = doc.sellingPrice || 0;
+    });
+
+    // Recalculate total_item for each and grand total
+    let calculatedTotal = 0;
+    const updatedItems = items.map((item) => {
+      const price = priceMap[item.itemID] || 0;
+      const total_item = item.quantity * price - (item.discount || 0);
+      calculatedTotal += total_item;
+
+      return {
+        itemID: new mongoose.Types.ObjectId(item.itemID),
+        quantity: Number(item.quantity),
+        discount: Number(item.discount || 0),
+        total_item: total_item,
+      };
+    });
+    const finalTotal = total ? Number(total) : calculatedTotal;
+
+    const updatedInvoice = await LocalInvoice.findOneAndUpdate(
+      {
+        _id: invoiceID,
+      },
+      {
+        invoiceNo,
+        customerName,
+        customerAddress,
+        customerPhone,
+        item: updatedItems,
+        total: finalTotal,
+        updatedAt: new Date(),
+      },
+      { new: true, runValidators: true }
+    ).lean();
+
+    if (!updatedInvoice) {
+      throw new Error("Invoice not found.");
+    }
+
+    return {
+      success: true,
+      data: updatedInvoice,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: {
+        message: error.message,
+      },
+    };
+  }
+};
+
+const deleteInvoice = async (invoiceID) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(invoiceID)) {
+      throw new Error("Invalid invoice ID.");
+    }
+
+    const deleted = await LocalInvoice.findOneAndDelete({ _id: invoiceID });
+
+    if (!deleted) {
+      throw new Error("Invoice not found.");
+    }
+
+    return {
+      success: true,
+      message: "Invoice deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: {
+        message: error.message,
+      },
+    };
+  }
+};
+
+export {
+  createInvoice,
+  getInvoiceById,
+  getInvoices,
+  updateInvoice,
+  deleteInvoice,
+};
