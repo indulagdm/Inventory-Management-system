@@ -8,6 +8,7 @@ import {
   LocalInvoiceHistory,
   CloudInvoiceHistory,
 } from "../models/invoice.history.model.js";
+
 import { generateID } from "../utils/generateID.js";
 import mongoose from "mongoose";
 
@@ -293,6 +294,7 @@ const updateInvoice = async (invoiceID, formData) => {
       throw new Error("At least one item is required.");
     }
 
+    const updatedQuantity = {};
     // Validate each item
     for (const item of items) {
       if (!item.itemID || !mongoose.Types.ObjectId.isValid(item.itemID)) {
@@ -301,23 +303,86 @@ const updateInvoice = async (invoiceID, formData) => {
       if (!item.quantity || item.quantity < 1) {
         throw new Error("Quantity must be at least 1.");
       }
+
+      let itemOnItem = await LocalItem.findOne({ _id: item.itemID });
+
+      updatedQuantity[itemOnItem._id.toString()] = item.quantity;
+
+      if (item.quantity >= itemOnItem.stock) {
+        throw new Error("Quantity is more that stock. Please update stock.");
+      }
     }
 
-    const existInvoice = await LocalInvoice.findOne({_id:invoiceID});
+    const existInvoice = await LocalInvoice.findOne({ _id: invoiceID });
 
-    if(!existInvoice){
-      throw new Error("No invoice found.")
+    if (!existInvoice) {
+      throw new Error("No invoice found.");
     }
-
-    let 
 
     const itemIDs = items.map((i) => new mongoose.Types.ObjectId(i.itemID));
-    const itemDocs = await LocalItem.find({ _id: { $in: itemIDs } });
 
-    const priceMap = {};
-    itemDocs.forEach((doc) => {
-      priceMap[doc._id.toString()] = doc.sellingPrice || 0;
+    const existInvoiceItemIDs = existInvoice.item.map(
+      (i) => new mongoose.Types.ObjectId(i.itemID)
+    );
+
+    const invoiceDocs = await LocalInvoice.find({
+      _id: invoiceID,
+      item: {
+        $elemMatch: {
+          itemID: { $in: existInvoiceItemIDs },
+        },
+      },
     });
+
+    const existInvoiceItemQuantity = {};
+    const existItemCount = {};
+    const priceMap = {};
+
+    const itemDocs = await LocalItem.find({
+      _id: { $in: existInvoiceItemIDs },
+    });
+
+    invoiceDocs.forEach((invoice) => {
+      invoice.item.forEach((it) => {
+        existInvoiceItemQuantity[it.itemID.toString()] = it.quantity;
+      });
+    });
+
+    let updateStock = 0;
+
+    // itemDocs.forEach((doc) => {
+    for (const doc of itemDocs) {
+      existItemCount[(doc._id, toString())] = doc.stock;
+      const countOnItemStock = existItemCount[doc._id.toString()];
+      const countOnInvoiceItemQuantity =
+        existInvoiceItemQuantity[doc._id.toString()];
+
+      console.log("countOnInvoiceItemQuantity", countOnInvoiceItemQuantity);
+
+      const updatedInvoiceQuantity = updatedQuantity[doc._id.toString()];
+
+      console.log("updatedInvoiceQuantity", updatedInvoiceQuantity);
+
+      updateStock = countOnInvoiceItemQuantity - updatedInvoiceQuantity;
+
+      console.log("updateStock", updateStock);
+
+      let item = await LocalItem.findOne({ _id: doc._id });
+
+      if (updateStock > 0 && updateStock != 0) {
+        item.stock += updateStock;
+      }
+      if (updateStock < 0 && updateStock != 0) {
+        item.stock -= updateStock;
+      }
+      if (updateStock == 0) {
+      }
+
+      await item.save();
+
+      priceMap[doc._id.toString()] = doc.sellingPrice || 0;
+    }
+    // });
 
     // Recalculate total_item for each and grand total
     let calculatedTotal = 0;

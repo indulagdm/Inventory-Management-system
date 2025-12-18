@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { atlasDB } from "../configs/atlasDatabaseConfig.js";
-import { compassDB } from "../configs/compassDatabaseConfig.js";
+import { atlasDB } from "../configs/atlas.config.js";
+import { compassDB } from "../configs/compass.config.js";
 
-const invoceHistorySchema = new mongoose.Schema(
+const invoiceHistorySchema = new mongoose.Schema(
   {
     invoiceID: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +12,7 @@ const invoceHistorySchema = new mongoose.Schema(
 
     old_data: {
       type: Object,
-      required: [true, "Invoice data is reuired."],
+      required: [true, "Invoice data is required."],
     },
 
     action: {
@@ -24,12 +24,12 @@ const invoceHistorySchema = new mongoose.Schema(
 );
 
 const LocalInvoiceHistory = compassDB.model(
-  "inoviceHistories",
-  invoceHistorySchema
+  "invoiceHistories",
+  invoiceHistorySchema
 );
 const CloudInvoiceHistory = atlasDB.model(
   "invoiceHistories",
-  invoceHistorySchema
+  invoiceHistorySchema
 );
 
 export { LocalInvoiceHistory, CloudInvoiceHistory };

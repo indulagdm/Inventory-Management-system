@@ -1,9 +1,15 @@
 import { LocalUser, CloudUser } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { EMAILREGAX, PASSWORDREGAX, SECRET } from "../utils/variable.js";
+import {
+  EMAILREGAX,
+  PASSWORDREGAX,
+  SECRET,
+  SERVICEUSER,
+} from "../utils/variable.js";
+import { saveKey, getKey, deleteKey } from "../security/advanceSecurity.js";
 import jwt from "jsonwebtoken";
 
-const registerUser = async (formData) => {
+const signUp = async (formData) => {
   try {
     const { email, password, role } = formData;
 
@@ -11,7 +17,7 @@ const registerUser = async (formData) => {
       throw new Error("Email not in correct pattern or incorrect email.");
     }
 
-    if (PASSWORDREGAX.test(password)) {
+    if (!PASSWORDREGAX.test(password)) {
       throw new Error("Password is not order in correct order.");
     }
 
@@ -36,12 +42,14 @@ const registerUser = async (formData) => {
     }
 
     const secret = jwt.sign({ email: user.email, role: user.role }, SECRET, {
-      expiresIn: "7d",
+      expiresIn: "3d",
     });
 
     user.secretCode = secret;
 
     await user.save();
+
+    await saveKey(SERVICEUSER, secret);
 
     return { success: true, message: "User created." };
   } catch (error) {
@@ -54,4 +62,37 @@ const registerUser = async (formData) => {
   }
 };
 
-export {registerUser}
+const signIn = async (formData) => {
+  try {
+    const { email, password } = formData;
+
+    if (!EMAILREGAX.test(email)) {
+      throw new Error("Email not in correct pattern or incorrect email.");
+    }
+
+    if (!PASSWORDREGAX.test(password)) {
+      throw new Error("Password is not order in correct order.");
+    }
+
+    const user = await CloudUser.findOne({ email: email });
+
+    if (!user) {
+      throw new Error("User not registered.");
+    }
+
+    const verifyPassword = await bcrypt.compare(password, user.password);
+
+    if (verifyPassword != password) {
+      throw new Error("Password not match.");
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: {
+        message: error.message,
+      },
+    };
+  }
+};
+
+export { signIn, signUp };
