@@ -17,7 +17,7 @@ const invoiceHistorySchema = new mongoose.Schema(
 
     action: {
       type: String,
-      enum: ["UPDATE", "DELETE"],
+      enum: ["NEW","UPDATE", "DELETE"],
     },
   },
   { timestamps: true }

@@ -16,7 +16,13 @@ const itemHistorySchema = new mongoose.Schema(
     },
     action: {
       type: String,
-      enum: ["UPDATE", "DELETE", "STOCK UPDATE"],
+      enum: [
+        "NEW",
+        "UPDATE",
+        "DELETE",
+        "STOCK UPDATE",
+        "STOCK UPDATE ON INVOICE",
+      ],
     },
   },
   { timestamp: true }
