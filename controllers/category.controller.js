@@ -30,6 +30,18 @@ const createCategory = async (formData) => {
 
     await newCategory.save();
 
+    const addCategoryHistory = new LocalCategoryHistory({
+      categoryID: newCategory._id,
+      old_data: newCategory,
+      action: "NEW",
+    });
+
+    if (!addCategoryHistory) {
+      throw new Error("Failed to save new category history.");
+    }
+
+    await addCategoryHistory.save();
+
     return { success: true, message: "New category added." };
   } catch (error) {
     return {

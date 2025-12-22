@@ -129,7 +129,7 @@ const createInvoice = async (data) => {
         if (itemExist.stock <= 10) itemExist.stockStatus == "low-stock";
         else if (itemExist.stock <= 0) itemExist.stockStatus == "out-of-stock";
 
-        itemExist.save();
+        await itemExist.save();
 
         const addItemForHistory = new LocalItemHistory({
           itemID: item.itemID,
@@ -147,6 +147,18 @@ const createInvoice = async (data) => {
 
     // Save invoice
     await invoices.save();
+
+    const addNewInvoiceHistory = new LocalInvoiceHistory({
+      invoiceID: invoices._id,
+      old_data: invoices,
+      action: "NEW",
+    });
+
+    if (!addNewInvoiceHistory) {
+      throw new Error("Failed to save adding invoice history.");
+    }
+
+    await addNewInvoiceHistory.save();
 
     // Convert Mongoose document to plain object
     const invoicePlain = invoices.toObject();
@@ -363,22 +375,39 @@ const updateInvoice = async (invoiceID, formData) => {
 
       console.log("updatedInvoiceQuantity", updatedInvoiceQuantity);
 
-      updateStock = countOnInvoiceItemQuantity - updatedInvoiceQuantity;
+      updateStock =
+        Number(countOnInvoiceItemQuantity) - Number(updatedInvoiceQuantity);
 
       console.log("updateStock", updateStock);
 
       let item = await LocalItem.findOne({ _id: doc._id });
 
       if (updateStock > 0 && updateStock != 0) {
-        item.stock += updateStock;
+        item.stock += Math.abs(updateStock);
+        await item.save();
+
+        const itemHistory = new LocalItemHistory({
+          itemID: item._id,
+          old_data: item,
+          action: "STOCK UPDATE ON INVOICE",
+        });
+
+        await itemHistory.save();
       }
       if (updateStock < 0 && updateStock != 0) {
-        item.stock -= updateStock;
+        item.stock -= Math.abs(updateStock);
+        await item.save();
+
+        const itemHistory = new LocalItemHistory({
+          itemID: item._id,
+          old_data: item,
+          action: "STOCK UPDATE ON INVOICE",
+        });
+
+        await itemHistory.save();
       }
       if (updateStock == 0) {
       }
-
-      await item.save();
 
       priceMap[doc._id.toString()] = doc.sellingPrice || 0;
     }
@@ -420,6 +449,17 @@ const updateInvoice = async (invoiceID, formData) => {
       throw new Error("Invoice not found.");
     }
 
+    const newInvoiceHistory = new LocalInvoiceHistory({
+      invoiceID: invoiceID,
+      old_data: updatedInvoice,
+      action: "UPDATE",
+    });
+
+    if (!newInvoiceHistory) {
+      throw new Error("Failed to save new invoice history.");
+    }
+    await newInvoiceHistory.save();
+
     return {
       success: true,
       data: updatedInvoice,
@@ -445,6 +485,17 @@ const deleteInvoice = async (invoiceID) => {
     if (!deleted) {
       throw new Error("Invoice not found.");
     }
+
+    const newInvoiceHistory = new LocalInvoiceHistory({
+      invoiceID: invoiceID,
+      old_data: deleted,
+      action: "DELETE",
+    });
+
+    if (!newInvoiceHistory) {
+      throw new Error("Failed to save new invoice history.");
+    }
+    await newInvoiceHistory.save();
 
     return {
       success: true,

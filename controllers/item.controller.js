@@ -94,6 +94,18 @@ const createItem = async (formData) => {
 
     await newItem.save();
 
+    const newItemHistory = new LocalItemHistory({
+      itemID: newItem._id,
+      old_data: newItem,
+      action: "NEW",
+    });
+
+    if (!newItemHistory) {
+      throw new Error("Failed to save item history.");
+    }
+
+    await newItemHistory.save();
+
     return { success: true, message: "Item added.", data: newItem.toObject() };
   } catch (error) {
     return {
@@ -208,6 +220,30 @@ const updateItem = async (itemID, data) => {
     let convertedCategoryID = categoryID;
 
     const existItem = await LocalItem.findById(convertedItemID);
+
+    if (!existItem) {
+      throw new Error("This item is not found.");
+    }
+
+    const updateItem = await LocalItem.findByIdAndUpdate(
+      { _id: convertedItemID },
+      {
+        itemCode: itemCode,
+        itemName: itemName,
+        categoryID: convertedCategoryID,
+        description: description,
+        unitPrice: unitPrice,
+        sellingPrice: sellingPrice,
+        discount: discount,
+        stock: stock,
+      },
+      { new: true }
+    );
+
+    if (!updateItem) {
+      throw new Error("Item update failed.");
+    }
+
     if (existItem) {
       const addItemHistory = new LocalItemHistory({
         itemID: convertedItemID,
@@ -220,25 +256,6 @@ const updateItem = async (itemID, data) => {
       }
 
       await addItemHistory.save();
-
-      const updateItem = await LocalItem.findByIdAndUpdate(
-        { _id: convertedItemID },
-        {
-          itemCode: itemCode,
-          itemName: itemName,
-          categoryID: convertedCategoryID,
-          description: description,
-          unitPrice: unitPrice,
-          sellingPrice: sellingPrice,
-          discount: discount,
-          stock: stock,
-        },
-        { new: true }
-      );
-
-      if (!updateItem) {
-        throw new Error("Item update failed.");
-      }
 
       return {
         data: updateItem.toObject(),
