@@ -1,2 +1,24 @@
 node_modules
 
+package-lock.json
+
+index.html
+
+index2.html
+
+test.json
+
+resources/
+
+nodemon.json
+
+backend/
+
+dist/
+
+logs/
+
+test/
+
+test-frontend/
+
