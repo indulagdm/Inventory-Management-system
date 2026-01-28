@@ -11,16 +11,16 @@ const productionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["registed", "temperory"],
+      enum: ["registered", "temporary"],
       default: "temporary",
     },
     machineId: {
       type: String,
-      required: [true, "Machine id is mandotary."],
+      required: [true, "Machine id is mandatory."],
     },
     synced: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const LocalProduction = compassDB.model("production", productionSchema);

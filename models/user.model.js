@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required."],
-      unique: [true, "Email should be uniqued."],
+      unique: [true, "Email should be unique."],
     },
     password: {
       type: String,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const LocalUser = compassDB.model("users", userSchema);
