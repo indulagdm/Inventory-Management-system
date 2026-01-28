@@ -15,8 +15,8 @@ transporter.verify((error) => {
   if (error) {
     console.error("Email Transport Error:", error);
   } else {
-    console.log("Ready to mailling....");
+    console.log("Ready to mailing....");
   }
 });
 
-export default { transporter };
+export { transporter };
