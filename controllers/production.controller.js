@@ -1,6 +1,8 @@
 import pkg from "node-machine-id";
-const { machineIdSync } = pkg;
-import { LocalProduction, CloudProduction } from "../models/production.model.js";
+import {
+  LocalProduction,
+  CloudProduction,
+} from "../models/production.model.js";
 import {
   saveKey,
   getKey,
@@ -12,6 +14,8 @@ import { dirname } from "../utils/dirname.js";
 
 import fs from "fs";
 import path from "path";
+
+const { machineIdSync } = pkg;
 const __dirname = dirname(import.meta.url);
 
 const LICENSE_FILE = path.join(__dirname, "./", "resources", "license.enc");
@@ -31,7 +35,7 @@ const createProduction = async (data) => {
     });
 
     if (existProduction) {
-      throw new Error("This device is already registed.");
+      throw new Error("This device is already registered.");
     }
 
     const encryptedData = fs.readFileSync(LICENSE_FILE, "utf8");
@@ -41,7 +45,7 @@ const createProduction = async (data) => {
     if (encryptedData === encryptProductionkey) {
       const newProduction = new LocalProduction({
         productionKey: encryptProductionkey,
-        status: "registed",
+        status: "registered",
         machineId: machineId,
       });
 

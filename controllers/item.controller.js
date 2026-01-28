@@ -37,7 +37,7 @@ const createItem = async (formData) => {
       convertedCategoryID.buffer
     ) {
       convertedCategoryID = new mongoose.Types.ObjectId(
-        convertedCategoryID.buffer
+        convertedCategoryID.buffer,
       ).toHexString();
     }
     // Handle plain object with CategoryID property
@@ -51,7 +51,7 @@ const createItem = async (formData) => {
     convertedCategoryID = String(convertedCategoryID);
     if (!mongoose.isValidObjectId(convertedCategoryID)) {
       throw new Error(
-        "Invalid Category ID: " + JSON.stringify(convertedCategoryID)
+        "Invalid Category ID: " + JSON.stringify(convertedCategoryID),
       );
     }
 
@@ -237,7 +237,7 @@ const updateItem = async (itemID, data) => {
         discount: discount,
         stock: stock,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updateItem) {
@@ -252,7 +252,7 @@ const updateItem = async (itemID, data) => {
       });
 
       if (!addItemHistory) {
-        throw new Error("Failed to save item hostory.");
+        throw new Error("Failed to save item history.");
       }
 
       await addItemHistory.save();
@@ -286,7 +286,7 @@ const updateStock = async (itemID, data) => {
     // Handle Buffer
     else if (typeof convertedItemID === "object" && convertedItemID.buffer) {
       convertedItemID = new mongoose.Types.ObjectId(
-        convertedItemID.buffer
+        convertedItemID.buffer,
       ).toHexString();
     }
     // Handle plain object with itemID property
@@ -316,7 +316,7 @@ const updateStock = async (itemID, data) => {
           stock: updateStock,
           synced: false,
         },
-        { new: true }
+        { new: true },
       );
 
       if (!updateItem) {
@@ -330,7 +330,7 @@ const updateStock = async (itemID, data) => {
       });
 
       if (!addItemHistory) {
-        throw new Error("Failed to save item hostory.");
+        throw new Error("Failed to save item history.");
       }
 
       await addItemHistory.save();
@@ -364,7 +364,7 @@ const deleteItem = async (itemID) => {
     // Handle Buffer
     else if (typeof convertedItemID === "object" && convertedItemID.buffer) {
       convertedItemID = new mongoose.Types.ObjectId(
-        convertedItemID.buffer
+        convertedItemID.buffer,
       ).toHexString();
     }
     // Handle plain object with itemID property
@@ -403,7 +403,7 @@ const deleteItem = async (itemID) => {
     });
 
     if (!addItemHistory) {
-      throw new Error("Failed to save item hostory.");
+      throw new Error("Failed to save item history.");
     }
 
     await addItemHistory.save();
