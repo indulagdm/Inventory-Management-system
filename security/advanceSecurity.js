@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import keytar from "keytar";
-import { ACCOUNT, ALGORITHM, SERVICE, KEY, IV } from "../utils/variable.js";
+import { ACCOUNT, ALGORITHM, KEY, IV } from "../utils/variable.js";
 
 const encryption = async (text) => {
   try {
@@ -30,17 +30,17 @@ const decryption = async (encryptedText) => {
   }
 };
 
-const saveKey = async (token) => {
-  await keytar.setPassword(SERVICE, ACCOUNT, token);
+const saveKey = async (service, token) => {
+  await keytar.setPassword(service, ACCOUNT, token);
 };
 
-const getKey = async () => {
-  const token = await keytar.getPassword(SERVICE, ACCOUNT);
+const getKey = async (service) => {
+  const token = await keytar.getPassword(service, ACCOUNT);
   return token;
 };
 
-const deleteKey = async () => {
-  await keytar.deletePassword(SERVICE, ACCOUNT);
+const deleteKey = async (service) => {
+  await keytar.deletePassword(service, ACCOUNT);
 };
 
 export { encryption, decryption, saveKey, getKey, deleteKey };
